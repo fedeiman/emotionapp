@@ -5,12 +5,25 @@ const { width: winWidth, height: winHeight } = Dimensions.get('window');
 
 export default StyleSheet.create({
     preview: {
-        height: winHeight,
-        width: winWidth,
-        position: 'absolute',
-        left: 0,
-        top: 0,
-        right: 0,
-        bottom: 0,
+        flex: 1, 
     },
+    button: {
+        flex:1,
+        justifyContent:'center',
+      },
+    backbutton:{
+        flex: 0.1,
+        alignSelf: 'flex-end',
+        alignItems: 'center',
+    },
+    fontype: {
+        fontSize: 15, 
+        marginBottom: 10, 
+        color: 'white' 
+    },
+    cameraView: {
+        flex: 1,
+        backgroundColor: 'transparent',
+        flexDirection: 'row',
+    }
 });

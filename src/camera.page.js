@@ -1,7 +1,7 @@
 // src/camera.page.js file
 import React from 'react';
 import { Camera } from 'expo-camera';
-import { View, Text } from 'react-native';
+import { View, Text, Button, TouchableOpacity } from 'react-native';
 import * as Permissions from 'expo-permissions';
 
 import styles from './styles';
@@ -12,7 +12,6 @@ export default class CameraPage extends React.Component {
     state = {
         hasCameraPermission: null,
     };
-
     async componentDidMount() {
         const camera = await Permissions.askAsync(Permissions.CAMERA);
         const audio = await Permissions.askAsync(Permissions.AUDIO_RECORDING);
@@ -20,6 +19,13 @@ export default class CameraPage extends React.Component {
 
         this.setState({ hasCameraPermission });
     };
+    state = {bool: false}
+
+    _switch = () => {
+        this.setState({
+            bool: true
+        })
+    }
     render() {
         const { hasCameraPermission } = this.state;
 
@@ -30,13 +36,26 @@ export default class CameraPage extends React.Component {
         }
 
         return (
-            <View>
-                <Camera
-                    style={styles.preview}
-                    type={Camera.Constants.Type.front}
-                    ref={camera => this.camera = camera}
-                />
-            </View>
+            <View style = {styles.button}>
+                {this.state.bool 
+                ? <Camera 
+                    style={styles.preview} 
+                    type={Camera.Constants.Type.front} 
+                    ref={camera => this.camera = camera}>
+                    <View style={styles.cameraView}>
+                        <TouchableOpacity
+                        style={styles.backbutton}
+                        onPress={() => {
+                            this.setState({
+                                bool: false
+                            })
+                        }}>
+                        <Text style={styles.fontype}> Back </Text>
+                        </TouchableOpacity>
+                    </View>
+                </Camera> 
+                : <Button onPress={this._switch} title="camera"/>}
+            </View> 
         );
     };
 };
