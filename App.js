@@ -1,12 +1,36 @@
-// App.js file
 import React from 'react';
+import { StyleSheet,
+  Button,
+  View,
+  Alert,} from 'react-native';
+import Fun from './src/graf'
 
-import CameraPage from './src/camera.page';
+// function Fun() {
+//  return(Alert.alert('Simple Button pressed'));
+//} 
 
-export default class App extends React.Component {
-    render() {
-        return (
-            <CameraPage />
-        );
-    };
-};
+export default function App() {
+  return (
+    <Fun/>
+  );
+}
+
+/* 
+<View  style={{
+  flex: 1,
+  flexDirection: 'column',
+  justifyContent: 'center'}}
+>
+<Button
+  onPress={() => {Alert.alert('DFSGSG')}}
+  title="Click ME"
+  color="blue"
+/>
+</View> */
+//const styles = StyleSheet.create({
+  //container: {
+    //flex: 1,
+    //backgroundColor: '#fff',
+    //alignItems: 'center',
+    //justifyContent: 'center',
+ // },//});
