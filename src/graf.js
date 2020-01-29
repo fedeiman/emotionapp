@@ -2,15 +2,16 @@ import React, {Component} from 'react';
 import {Text, View, Alert, Button, TouchableOpacity} from 'react-native';
 import { StackedAreaChart } from 'react-native-svg-charts'
 import * as shape from 'd3-shape'
+import  {info} from './data.json'
 
   const colors = [ '#8800cc', '#aa00ff', '#cc66ff', '#eeccff' ]
   const keys   = [ 'Happy', 'Sad', 'Neutral', 'Angry' ]
 
   const svgs = [
-    { onPress: () => Alert.alert('Happy')},
-    { onPress: () => Alert.alert('Sad')},
+    { onPress: () => Alert.alert('Happy') },
+    { onPress: () => Alert.alert('Sad') },
     { onPress: () => Alert.alert('Neutral')},
-    { onPress: () => Alert.alert('Angry')},
+    { onPress: () => Alert.alert('Angry') },
   ]
 
   export default class Fun extends Component {
@@ -99,4 +100,4 @@ import * as shape from 'd3-shape'
         </View>
       );
       }
-    }
+    }   
