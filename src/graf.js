@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import {Text, View, Alert, Button, TouchableOpacity} from 'react-native';
 import { StackedAreaChart } from 'react-native-svg-charts'
 import * as shape from 'd3-shape'
-import  {info} from './data.json'
+
+  const info = require('./data.json')
 
   const colors = [ '#8800cc', '#aa00ff', '#cc66ff', '#eeccff' ]
   const keys   = [ 'Happy', 'Sad', 'Neutral', 'Angry' ]
@@ -30,33 +31,33 @@ import  {info} from './data.json'
     datos = () => data = [
       {
         Data: 1,
-        Happy:this.state.count % 10,
-        Sad: (this.state.count + 3) % 15,
-        Neutral:(this.state.count - 1) % 10,
-        Angry: (Math.random()*100)%10,
+        Happy: info.info[0].Happy,
+        Sad: info.info[0].Sad,
+        Neutral: info.info[0].Neutral,
+        Angry: info.info[0].Angry,
       },
       {
         Data: 2,
-        Happy: Math.random()*100,
-        Sad: Math.random()*100,
-        Neutral: Math.random()*100,
-        Angry: Math.random()*100,
+        Happy: info.info[1].Happy,
+        Sad: info.info[1].Sad,
+        Neutral: info.info[1].Neutral,
+        Angry: info.info[1].Angry,
       },
       {
         Data: 3,
-        Happy: Math.random()*100,
-        Sad: Math.random()*100,
-        Neutral: Math.random()*100,
-        Angry: Math.random()*100,
+        Happy: info.info[2].Happy,
+        Sad: info.info[2].Sad,
+        Neutral: info.info[2].Neutral,
+        Angry: info.info[2].Angry,
       },
       {
         Data: 4,
-        Happy: Math.random()*100,
-        Sad: Math.random()*100,
-        Neutral: Math.random()*100,
-        Angry: Math.random()*100,
-      },
-    ]
+        Happy: info.info[3].Happy,
+        Sad: info.info[3].Sad,
+        Neutral: info.info[3].Neutral,
+        Angry: info.info[3].Angry,
+      }
+    ] 
   
     _switch = () => {
         this.setState({
@@ -100,4 +101,4 @@ import  {info} from './data.json'
         </View>
       );
       }
-    }   
+    }
