@@ -1,22 +1,38 @@
 import React, {Component} from 'react';
-import {Text, View, Alert, Button, TouchableOpacity} from 'react-native';
+import {Text, View, Alert, Button, TouchableOpacity, Dimensions} from 'react-native';
 import { StackedAreaChart } from 'react-native-svg-charts'
 import * as shape from 'd3-shape'
+import {
+  LineChart
+} from "react-native-chart-kit";
 
   const dat = require('./data.json')
 
+  const chartConfig = {
+    backgroundGradientFrom: "#1E2923",
+    backgroundGradientFromOpacity: 0,
+    backgroundGradientTo: "#08130D",
+    backgroundGradientToOpacity: 0.5,
+    color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+    strokeWidth: 2, // optional, default 3
+    barPercentage: 0.5
+  };
+
+  const screenWidth = Dimensions.get("window").width;
+
   const colors = [ '#8800cc', '#aa00ff', '#cc66ff', '#eeccff' ]
   const keys   = [ 'Happy', 'Sad', 'Neutral', 'Angry' ]
-
+ 
   const svgs = [
     { onPress: () => Alert.alert('Happy') },
     { onPress: () => Alert.alert('Sad') },
     { onPress: () => Alert.alert('Neutral')},
     { onPress: () => Alert.alert('Angry') },
-  ]
+  ] 
 
   export default class Fun extends Component {
     data = [];
+    data1 = {};
 
     state = {bool: true, reset: true, count: 1}
 
@@ -39,8 +55,37 @@ import * as shape from 'd3-shape'
             Neutral: dat.info[i].Neutral,
             Angry: dat.info[i].Angry,
           }
+        }
+        this.data1 = {
+        labels : ["Happy", "Sad", "Neutral", "Angry"],
+        datasets : [
+          { 
+            data:[
+              this.state.count % 10,
+              (this.state.count * 5 + 3) % 20,
+              Math.random() * (this.state.count % 15),
+              (Math.random() / 5) * (this.state.count % 30),
+              Math.random(),
+              10 - this.state.count % 10
+            ],
+            color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // optional
+            strokeWidth: 2 // optional
+          },
+          {
+          data:[
+            this.state.count % 10,
+            (this.state.count * 5 + 3) % 20,
+            Math.random() * (this.state.count % 15),
+            (Math.random() / 5) * (this.state.count % 30),
+            Math.random(),
+            10 - this.state.count % 10
+          ],
+          color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // optional
+          strokeWidth: 2 // optional
+        }
+        ]
       }
-  }
+    }
   
     _switch = () => {
         this.setState({
@@ -67,15 +112,23 @@ import * as shape from 'd3-shape'
           </View>
           :
           <View>
-          <StackedAreaChart
-              style={ { height: 200, paddingVertical: 16 } }
-              data={ this.data }
-              keys={ keys }
-              colors={ colors }
-              curve={ shape.curveNatural }
-              showGrid={ false }
-              svgs={ svgs }
+            <LineChart
+                  data={this.data1}
+                  width={screenWidth}
+                  height={256}
+                  verticalLabelRotation={30}
+                  chartConfig={chartConfig}
+                  bezier
             />
+            <StackedAreaChart
+                style={ { height: 200, paddingVertical: 16 } }
+                data={ this.data }
+                keys={ keys }
+                colors={ colors }
+                curve={ shape.curveNatural }
+                showGrid={ false }
+                svgs={ svgs }
+              /> 
             <TouchableOpacity
               onPress={() => {this.setState({bool: true})}}>
             <Text> Back </Text>
