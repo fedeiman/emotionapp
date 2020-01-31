@@ -3,7 +3,7 @@ import {Text, View, Alert, Button, TouchableOpacity} from 'react-native';
 import { StackedAreaChart } from 'react-native-svg-charts'
 import * as shape from 'd3-shape'
 
-  const info = require('./data.json')
+  const dat = require('./data.json')
 
   const colors = [ '#8800cc', '#aa00ff', '#cc66ff', '#eeccff' ]
   const keys   = [ 'Happy', 'Sad', 'Neutral', 'Angry' ]
@@ -16,6 +16,7 @@ import * as shape from 'd3-shape'
   ]
 
   export default class Fun extends Component {
+    data = [];
 
     state = {bool: true, reset: true, count: 1}
 
@@ -28,36 +29,18 @@ import * as shape from 'd3-shape'
       ), 100); 
     }
 
-    datos = () => data = [
-      {
-        Data: 1,
-        Happy: info.info[0].Happy,
-        Sad: info.info[0].Sad,
-        Neutral: info.info[0].Neutral,
-        Angry: info.info[0].Angry,
-      },
-      {
-        Data: 2,
-        Happy: info.info[1].Happy,
-        Sad: info.info[1].Sad,
-        Neutral: info.info[1].Neutral,
-        Angry: info.info[1].Angry,
-      },
-      {
-        Data: 3,
-        Happy: info.info[2].Happy,
-        Sad: info.info[2].Sad,
-        Neutral: info.info[2].Neutral,
-        Angry: info.info[2].Angry,
-      },
-      {
-        Data: 4,
-        Happy: info.info[3].Happy,
-        Sad: info.info[3].Sad,
-        Neutral: info.info[3].Neutral,
-        Angry: info.info[3].Angry,
+    datos = () => {
+      for (let i=0; i < (dat.info.length); i++) {
+        this.data[i] =
+          {
+            Data: 1,
+            Happy: dat.info[i].Happy,
+            Sad: dat.info[i].Sad,
+            Neutral: dat.info[i].Neutral,
+            Angry: dat.info[i].Angry,
+          }
       }
-    ] 
+  }
   
     _switch = () => {
         this.setState({
@@ -86,7 +69,7 @@ import * as shape from 'd3-shape'
           <View>
           <StackedAreaChart
               style={ { height: 200, paddingVertical: 16 } }
-              data={ data }
+              data={ this.data }
               keys={ keys }
               colors={ colors }
               curve={ shape.curveNatural }
