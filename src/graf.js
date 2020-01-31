@@ -33,6 +33,10 @@ import {
   export default class Fun extends Component {
     data = [];
     data1 = {};
+    dataHappy = [];
+    dataSad = [];
+    dataNeutral = [];
+    dataAngry = [];
 
     state = {bool: true, reset: true, count: 1}
 
@@ -54,35 +58,35 @@ import {
             Sad: dat.info[i].Sad,
             Neutral: dat.info[i].Neutral,
             Angry: dat.info[i].Angry,
-          }
+          },
+        this.dataHappy[i] = dat.info[i].Happy,
+        this.dataSad[i] =  dat.info[i].Sad,
+        this.dataNeutral[i] = dat.info[i].Neutral,
+        this.dataAngry[i] = dat.info[i].Angry
         }
         this.data1 = {
         labels : ["Happy", "Sad", "Neutral", "Angry"],
         datasets : [
           { 
-            data:[
-              this.state.count % 10,
-              (this.state.count * 5 + 3) % 20,
-              Math.random() * (this.state.count % 15),
-              (Math.random() / 5) * (this.state.count % 30),
-              Math.random(),
-              10 - this.state.count % 10
-            ],
+            data: this.dataHappy, 
             color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // optional
             strokeWidth: 2 // optional
           },
           {
-          data:[
-            this.state.count % 10,
-            (this.state.count * 5 + 3) % 20,
-            Math.random() * (this.state.count % 15),
-            (Math.random() / 5) * (this.state.count % 30),
-            Math.random(),
-            10 - this.state.count % 10
-          ],
-          color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // optional
-          strokeWidth: 2 // optional
-        }
+            data:this.dataSad,
+            color: (opacity = 1) => `rgba(255, 255, 0, ${opacity})`, // optional
+            strokeWidth: 2 // optional
+          },
+          {
+            data:this.dataNeutral,
+            color: (opacity = 1) => `rgba(255, 0, 0, ${opacity})`, // optional
+            strokeWidth: 2 // optional
+          },
+          {
+            data:this.dataAngry,
+            color: (opacity = 1) => `rgba(0, 0, 255, ${opacity})`, // optional
+            strokeWidth: 2 // optional
+          }
         ]
       }
     }
