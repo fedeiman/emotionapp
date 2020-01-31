@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
-import {Text, View, Alert, Button, TouchableOpacity, Dimensions} from 'react-native';
-import { StackedAreaChart } from 'react-native-svg-charts'
-import * as shape from 'd3-shape'
+import {Text, View, Button, TouchableOpacity, Dimensions} from 'react-native';
 import {
   LineChart
 } from "react-native-chart-kit";
@@ -20,19 +18,8 @@ import {
 
   const screenWidth = Dimensions.get("window").width;
 
-  const colors = [ '#8800cc', '#aa00ff', '#cc66ff', '#eeccff' ]
-  const keys   = [ 'Happy', 'Sad', 'Neutral', 'Angry' ]
- 
-  const svgs = [
-    { onPress: () => Alert.alert('Happy') },
-    { onPress: () => Alert.alert('Sad') },
-    { onPress: () => Alert.alert('Neutral')},
-    { onPress: () => Alert.alert('Angry') },
-  ] 
-
   export default class Fun extends Component {
-    data = [];
-    data1 = {};
+    data = {};
     dataHappy = [];
     dataSad = [];
     dataNeutral = [];
@@ -51,20 +38,12 @@ import {
 
     datos = () => {
       for (let i=0; i < (dat.info.length); i++) {
-        this.data[i] =
-          {
-            Data: 1,
-            Happy: dat.info[i].Happy,
-            Sad: dat.info[i].Sad,
-            Neutral: dat.info[i].Neutral,
-            Angry: dat.info[i].Angry,
-          },
         this.dataHappy[i] = dat.info[i].Happy,
         this.dataSad[i] =  dat.info[i].Sad,
         this.dataNeutral[i] = dat.info[i].Neutral,
         this.dataAngry[i] = dat.info[i].Angry
         }
-        this.data1 = {
+        this.data = {
         labels : ["Happy", "Sad", "Neutral", "Angry"],
         datasets : [
           { 
@@ -117,22 +96,13 @@ import {
           :
           <View>
             <LineChart
-                  data={this.data1}
-                  width={screenWidth}
-                  height={256}
-                  verticalLabelRotation={30}
-                  chartConfig={chartConfig}
-                  bezier
+              data={this.data}
+              width={screenWidth}
+              height={256}
+              verticalLabelRotation={30}
+              chartConfig={chartConfig}
+              bezier
             />
-            <StackedAreaChart
-                style={ { height: 200, paddingVertical: 16 } }
-                data={ this.data }
-                keys={ keys }
-                colors={ colors }
-                curve={ shape.curveNatural }
-                showGrid={ false }
-                svgs={ svgs }
-              /> 
             <TouchableOpacity
               onPress={() => {this.setState({bool: true})}}>
             <Text> Back </Text>
