@@ -17,27 +17,38 @@ import {LineChart} from "react-native-chart-kit";
 
   export default class Fun extends Component {
     data = {};
-    dataHappy = [];
-    dataSad = [];
-    dataNeutral = [];
-    dataAngry = [];
+    dataHappy = [0,0,0,0,0,0];
+    dataSad = [0,0,0,0,0,0];
+    dataNeutral = [0,0,0,0,0,0];
+    dataAngry = [0,0,0,0,0,0];
+    j = 0;
 
-    state = {bool: true, reset: true}
+    state = {bool: true, reset: true, count: 1}
 
     componentDidMount(){
       setInterval(() => (
         this.setState(previousState => (
           { reset: !previousState.reset}
-        ))), 1000); 
+        )),
+        this.state.count = this.state.count + 1 
+      ), 1000); 
     }
 
     datos = () => {
-      for (let i=0; i < (dat.info.length); i++) {
-        this.dataHappy[i] = dat.info[i].Happy,
-        this.dataSad[i] =  dat.info[i].Sad,
-        this.dataNeutral[i] = dat.info[i].Neutral,
-        this.dataAngry[i] = dat.info[i].Angry
+        if(this.j < (dat.info.length)){
+          for(let i=0; i < 5; i++){
+            this.dataHappy.splice(i, 1, this.dataHappy[i+1])
+            this.dataSad.splice(i, 1, this.dataSad[i+1])
+            this.dataNeutral.splice(i, 1, this.dataNeutral[i+1])
+            this.dataAngry.splice(i, 1, this.dataAngry[i+1])
+          }
+        this.dataHappy.splice(5, 1, dat.info[this.j].Happy)
+        this.dataSad.splice(5, 1, dat.info[this.j].Sad)
+        this.dataNeutral.splice(5, 1, dat.info[this.j].Neutral)
+        this.dataAngry.splice(5, 1, dat.info[this.j].Angry)
+        this.j ++
         }
+        else{this.j = 0}
         this.data = {
         datasets : [
           { 
