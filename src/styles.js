@@ -5,25 +5,50 @@ const { width: winWidth, height: winHeight } = Dimensions.get('window');
 
 export default StyleSheet.create({
     preview: {
-        flex: 1, 
+      flex:1,
+      flexDirection: 'row',
+      justifyContent: 'space-around',
     },
     button: {
         flex:1,
         justifyContent:'center',
       },
     backbutton:{
-        flex: 0.1,
-        alignSelf: 'flex-end',
-        alignItems: 'center',
-    },
-    fontype: {
-        fontSize: 15, 
-        marginBottom: 10, 
-        color: 'white' 
+        justifyContent: 'flex-end',
     },
     cameraView: {
         flex: 1,
         backgroundColor: 'transparent',
         flexDirection: 'row',
-    }
+    },
+    alignCenter: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    bottomToolbar: {
+        width: winWidth,
+        position: 'absolute',
+        height: 100,
+        bottom: 0,
+    },
+    captureBtn: {
+        width: 60,
+        height: 60,
+        borderWidth: 2,
+        borderRadius: 60,
+        borderColor: "#FFFFFF",
+    },
+    captureBtnActive: {
+        width: 80,
+        height: 80,
+    },
+    captureBtnInternal: {
+        width: 76,
+        height: 76,
+        borderWidth: 2,
+        borderRadius: 76,
+        backgroundColor: "red",
+        borderColor: "transparent",
+    },
 });

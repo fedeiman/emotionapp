@@ -1,8 +1,10 @@
 // src/camera.page.js file
-import React from 'react';
+import React, {Component} from 'react';
 import { Camera } from 'expo-camera';
 import { View, Text, Button, TouchableOpacity } from 'react-native';
 import * as Permissions from 'expo-permissions';
+import { Ionicons } from '@expo/vector-icons';
+import Toolbar from './toolbar.component';
 
 import styles from './styles';
 
@@ -10,8 +12,14 @@ export default class CameraPage extends React.Component {
     camera = null;
 
     state = {
+        cameraType: null,
         hasCameraPermission: null,
     };
+
+    setCameraType = (cameraType) => this.setState({ cameraType });
+
+
+
     async componentDidMount() {
         const camera = await Permissions.askAsync(Permissions.CAMERA);
         const audio = await Permissions.askAsync(Permissions.AUDIO_RECORDING);
@@ -21,13 +29,14 @@ export default class CameraPage extends React.Component {
     };
     state = {bool: false}
 
-    _switch = () => {
+    _switch = () => 
         this.setState({
             bool: true
         })
-    }
+    
+
     render() {
-        const { hasCameraPermission } = this.state;
+        const { hasCameraPermission, cameraType } = this.state;
 
         if (hasCameraPermission === null) {
             return <View />;
@@ -36,26 +45,33 @@ export default class CameraPage extends React.Component {
         }
 
         return (
+            <React.Fragment>
             <View style = {styles.button}>
                 {this.state.bool 
                 ? <Camera 
                     style={styles.preview} 
-                    type={Camera.Constants.Type.front} 
+                    type={cameraType}
                     ref={camera => this.camera = camera}>
-                    <View style={styles.cameraView}>
-                        <TouchableOpacity
-                        style={styles.backbutton}
-                        onPress={() => {
-                            this.setState({
-                                bool: false
-                            })
-                        }}>
-                        <Text style={styles.fontype}> Back </Text>
-                        </TouchableOpacity>
-                    </View>
-                </Camera> 
-                : <Button onPress={this._switch} title="camera"/>}
+                    <TouchableOpacity style={styles.backbutton}
+                        onPress={ () => this.setState({
+                            bool: false
+                        })
+                        }>
+                        <Ionicons
+                            name="md-arrow-back"
+                            color="white"
+                            size={30}
+                        />
+                    </TouchableOpacity>
+                    <Toolbar 
+                    cameraType={cameraType}
+                    setCameraType={this.setCameraType}
+                />
+                </Camera>
+                : <Button onPress={() => this._switch()} title="camera"/>}
             </View> 
+
+            </React.Fragment>
         );
     };
 };
