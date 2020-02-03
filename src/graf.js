@@ -1,9 +1,6 @@
 import React, {Component} from 'react';
 import {Text, View, Button, TouchableOpacity, Dimensions} from 'react-native';
-import {
-  LineChart
-} from "react-native-chart-kit";
-
+import {LineChart} from "react-native-chart-kit";
   const dat = require('./data.json')
 
   const chartConfig = {
@@ -25,15 +22,13 @@ import {
     dataNeutral = [];
     dataAngry = [];
 
-    state = {bool: true, reset: true, count: 1}
+    state = {bool: true, reset: true}
 
     componentDidMount(){
       setInterval(() => (
         this.setState(previousState => (
           { reset: !previousState.reset}
-        )),
-        this.state.count = this.state.count + 1 
-      ), 100); 
+        ))), 1000); 
     }
 
     datos = () => {
@@ -44,7 +39,6 @@ import {
         this.dataAngry[i] = dat.info[i].Angry
         }
         this.data = {
-        labels : ["Happy", "Sad", "Neutral", "Angry"],
         datasets : [
           { 
             data: this.dataHappy, 
@@ -66,7 +60,9 @@ import {
             color: (opacity = 1) => `rgba(0, 0, 255, ${opacity})`, // optional
             strokeWidth: 2 // optional
           }
-        ]
+        ],
+        legend: ["Happy", "Sad", "Neutral", "Angry"],
+        legendFontSize: 85
       }
     }
   
@@ -97,7 +93,9 @@ import {
           <View>
             <LineChart
               data={this.data}
+              //legend={{enable:true, position:'ABOVE_CHART_BOTTOM',direction:"LEFT_TO_RIGHT", legendForm: "CIRCLE"}}
               width={screenWidth}
+              showLegend={false}
               height={256}
               verticalLabelRotation={30}
               chartConfig={chartConfig}
@@ -112,3 +110,6 @@ import {
       );
       }
     }
+
+/* 
+    horizontalAlignment, verticalAlignment, orientation, drawInside, direction. */
