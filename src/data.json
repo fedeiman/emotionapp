@@ -5,48 +5,6 @@
       "Sad": 75,
       "Neutral": 0,
       "Angry": 0
-    },
-    {
-      "Happy": 0,
-      "Sad": 0,
-      "Neutral": 10,
-      "Angry": 90
-    },
-    {
-      "Happy": 40,
-      "Sad": 5, 
-      "Neutral": 25,
-      "Angry": 30
-    }, 
-    {
-      "Happy": 20,
-      "Sad": 50,
-      "Neutral": 20,
-      "Angry": 10
-    },
-    {
-      "Happy": 0,
-      "Sad": 0,
-      "Neutral": 100,
-      "Angry": 0
-    },
-    {
-      "Happy": 25,
-      "Sad": 25,
-      "Neutral": 25,
-      "Angry": 25
-    },
-    {
-      "Happy": 41,
-      "Sad": 19, 
-      "Neutral": 20,
-      "Angry": 20
-    }, 
-    {
-      "Happy": 10,
-      "Sad": 10,
-      "Neutral": 70,
-      "Angry": 10
     }
   ]
 }

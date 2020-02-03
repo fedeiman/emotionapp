@@ -15,23 +15,42 @@ import {LineChart} from "react-native-chart-kit";
 
   const screenWidth = Dimensions.get("window").width;
 
+  edit = () => {
+    a = Math.random() * 100
+    b = Math.random() * 100
+    c = Math.random() * 100
+    d = Math.random() * 100
+    e = a+b+c+d
+    a = (a * 100) / e
+    b = (b * 100) / e
+    c = (c * 100) / e
+    d = (d * 100) / e
+    dat.info.push({
+      "Happy": a,
+      "Sad":b,
+      "Neutral": c,
+      "Angry": d
+    });
+  }
+
   export default class Fun extends Component {
+
     data = {};
-    dataHappy = [0,0,0,0,0,0];
-    dataSad = [0,0,0,0,0,0];
-    dataNeutral = [0,0,0,0,0,0];
-    dataAngry = [0,0,0,0,0,0];
+    dataHappy = new Array(6).fill(0);
+    dataSad = new Array(6).fill(0);
+    dataNeutral = new Array(6).fill(0);
+    dataAngry = new Array(6).fill(0);
     j = 0;
 
-    state = {bool: true, reset: true, count: 1}
+    state = {bool: true, reset: true}
 
     componentDidMount(){
       setInterval(() => (
         this.setState(previousState => (
           { reset: !previousState.reset}
         )),
-        this.state.count = this.state.count + 1 
-      ), 1000); 
+        edit()
+        ), 1000); 
     }
 
     datos = () => {
@@ -48,7 +67,6 @@ import {LineChart} from "react-native-chart-kit";
         this.dataAngry.splice(5, 1, dat.info[this.j].Angry)
         this.j ++
         }
-        else{this.j = 0}
         this.data = {
         datasets : [
           { 
