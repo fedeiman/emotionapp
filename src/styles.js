@@ -10,13 +10,14 @@ export default StyleSheet.create({
       justifyContent: 'space-around',
     },
     graf: {
+        display:'flex',
         flex: 1.5,
-        justifyContent: 'flex-end',
+        justifyContent: 'space-between',
     },
     bot: {
         flexDirection: 'row',
         alignItems:'flex-end',
-        justifyContent: 'flex-end',
+        justifyContent: 'space-around',
     },
     button: {
         flex:1,

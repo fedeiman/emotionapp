@@ -63,11 +63,10 @@ import styles from './styles.js';
           this.dataAngry.splice(i, 1, this.dataAngry[i+1])
         }
         if(this.j < (dat.info.length)){
-          n = dat.info[this.j]
-          this.dataHappy.splice(5, 1, n.Happy)
-          this.dataSad.splice(5, 1, n.Sad)
-          this.dataNeutral.splice(5, 1, n.Neutral)
-          this.dataAngry.splice(5, 1, n.Angry)
+          this.dataHappy.splice(5, 1, dat.info[this.j].Happy)
+          this.dataSad.splice(5, 1, dat.info[this.j].Sad)
+          this.dataNeutral.splice(5, 1, dat.info[this.j].Neutral)
+          this.dataAngry.splice(5, 1, dat.info[this.j].Angry)
         }
         else{
           this.dataHappy.splice(5, 1, 0)
@@ -112,7 +111,7 @@ import styles from './styles.js';
               <LineChart
                 data={this.data}
                 width={screenWidth}
-                height={225}
+                height={250}
                 chartConfig={chartConfig}
                 bezier
               />
