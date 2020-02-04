@@ -9,10 +9,15 @@ export default StyleSheet.create({
       flexDirection: 'row',
       justifyContent: 'space-around',
     },
+    graf: {
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'flex-end',
+    },
     button: {
         flex:1,
         justifyContent:'center',
-      },
+    },
     backbutton:{
         justifyContent: 'flex-end',
     },

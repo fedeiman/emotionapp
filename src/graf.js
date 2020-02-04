@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import {Text, View, Button, TouchableOpacity, Dimensions} from 'react-native';
+import {View, Dimensions} from 'react-native';
 import {LineChart} from "react-native-chart-kit";
+import styles from './styles.js';
   
   const dat = require('./data.json')
 
@@ -43,7 +44,7 @@ import {LineChart} from "react-native-chart-kit";
     dataAngry = new Array(6).fill(0);
     j = 0;
 
-    state = {bool: true, reset: true}
+    state = {reset: true}
 
     componentDidMount(){
       setInterval(() => (
@@ -102,31 +103,12 @@ import {LineChart} from "react-native-chart-kit";
       }
     }
   
-    _switch = () => {
-        this.setState({
-            bool: false
-        })
-    }
-
     render() {
       if(this.state.reset) {
         this.datos()
       }
         return(
-          <View style={{
-            flex: 1,
-            flexDirection: 'column',
-            justifyContent: 'center'}}>
-            {this.state.bool
-            ? 
-            <View>
-              <Button
-                title='Click me'
-                onPress={() => this._switch()}
-              />
-            </View>
-            :
-            <View>
+          <View style={styles.graf}>
               <LineChart
                 data={this.data}
                 width={screenWidth}
@@ -135,11 +117,6 @@ import {LineChart} from "react-native-chart-kit";
                 chartConfig={chartConfig}
                 bezier
               />
-              <TouchableOpacity
-                onPress={() => {this.setState({bool: true})}}>
-              <Text> Back </Text>
-              </TouchableOpacity>
-            </View>}
           </View>
         );
       }

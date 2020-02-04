@@ -53,6 +53,9 @@ export default class CameraPage extends React.Component {
                     style={styles.preview} 
                     type={cameraType}
                     ref={camera => this.camera = camera}>
+                    <View>
+                    <Fun/>
+                    </View>
                     <TouchableOpacity style={styles.backbutton}
                         onPress={ () => this.setState({
                             bool: false
@@ -68,7 +71,6 @@ export default class CameraPage extends React.Component {
                     cameraType={cameraType}
                     setCameraType={this.setCameraType}
                 />
-                <Fun/>
                 </Camera>
                 : <Button onPress={() => this._switch()} title="camera"/>}
             </View> 
