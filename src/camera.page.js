@@ -47,41 +47,37 @@ export default class CameraPage extends React.Component {
 
         return (
             <React.Fragment>
-            <View style = {styles.button}>
-                {this.state.bool
-                ?
-                <View style={styles.preview}>
-                <Camera
-                    style={styles.preview}
-                    type={cameraType}
-                    ref={camera => this.camera = camera}>
-                </Camera>
-                <View style={styles.graf}>
-                <Fun/>
-                <View style={styles.bot}>
-                <TouchableOpacity style={styles.backbutton}
-                        onPress={ () => this.setState({
-                            bool: false
-                        })
-                        }>
-                        <Ionicons
-                            name="md-arrow-back"
-                            color="black"
-                            size={30}
-                        />
-                    </TouchableOpacity>
-                    <Toolbar 
-                    cameraType={cameraType}
-                    setCameraType={this.setCameraType}
-                />
-                </View>                
+                <View style = {styles.button}>
+                    {this.state.bool
+                    ?<View style={styles.preview}>
+                        <Camera
+                            style={styles.preview}
+                            type={cameraType}
+                            ref={camera => this.camera = camera}>   
+                        </Camera>
+                        <View style={styles.graf}>
+                            <Fun/>
+                            <View style={styles.bot}>
+                                <TouchableOpacity style={styles.backbutton}
+                                    onPress={ () => this.setState({
+                                        bool: false
+                                    })}>
+                                <Ionicons
+                                    name="md-arrow-back"
+                                    color="black"
+                                    size={30}
+                                />
+                                </TouchableOpacity>
+                                <Toolbar 
+                                    cameraType={cameraType}
+                                    setCameraType={this.setCameraType}/>
+                            </View>                
+                        </View>
+                    </View>
+                    :<View>
+                        <Button onPress={() => this._switch()} title="camera"/>
+                    </View>}
                 </View>
-                </View>
-                : 
-                <View>
-                <Button onPress={() => this._switch()} title="camera"/>
-                </View>}
-            </View>
             </React.Fragment>
         );
     };
