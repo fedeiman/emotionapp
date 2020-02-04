@@ -7,6 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 import Toolbar from './toolbar.component';
 
 import styles from './styles';
+import Fun from './graf';
 
 export default class CameraPage extends React.Component {
     camera = null;
@@ -67,6 +68,7 @@ export default class CameraPage extends React.Component {
                     cameraType={cameraType}
                     setCameraType={this.setCameraType}
                 />
+                <Fun/>
                 </Camera>
                 : <Button onPress={() => this._switch()} title="camera"/>}
             </View> 
