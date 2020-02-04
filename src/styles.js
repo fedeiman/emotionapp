@@ -5,13 +5,17 @@ const { width: winWidth, height: winHeight } = Dimensions.get('window');
 
 export default StyleSheet.create({
     preview: {
-      flex:1,
-      flexDirection: 'row',
+      flex: 2,
+      flexDirection: 'column',
       justifyContent: 'space-around',
     },
     graf: {
-        flex: 1,
-        flexDirection: 'column',
+        flex: 1.5,
+        justifyContent: 'flex-end',
+    },
+    bot: {
+        flexDirection: 'row',
+        alignItems:'flex-end',
         justifyContent: 'flex-end',
     },
     button: {
@@ -19,7 +23,7 @@ export default StyleSheet.create({
         justifyContent:'center',
     },
     backbutton:{
-        justifyContent: 'flex-end',
+        justifyContent: 'flex-start',
     },
     cameraView: {
         flex: 1,

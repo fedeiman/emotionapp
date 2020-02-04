@@ -13,13 +13,13 @@ export default ({
     cameraType = CameraTypes.back,  
     setCameraType, 
 }) => (
-        <TouchableOpacity  style={styles.backbutton}
+        <TouchableOpacity
         onPress={() => setCameraType(
             cameraType === CameraTypes.back ? CameraTypes.front : CameraTypes.back
             )}>
             <Ionicons
                 name="md-reverse-camera"
-                color="white"
+                color="black"
                 size={30}/>
         </TouchableOpacity>
 );

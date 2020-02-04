@@ -112,8 +112,7 @@ import styles from './styles.js';
               <LineChart
                 data={this.data}
                 width={screenWidth}
-                height={256}
-                verticalLabelRotation={30}
+                height={225}
                 chartConfig={chartConfig}
                 bezier
               />

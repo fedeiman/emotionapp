@@ -48,22 +48,25 @@ export default class CameraPage extends React.Component {
         return (
             <React.Fragment>
             <View style = {styles.button}>
-                {this.state.bool 
-                ? <Camera 
-                    style={styles.preview} 
+                {this.state.bool
+                ?
+                <View style={styles.preview}>
+                <Camera
+                    style={styles.preview}
                     type={cameraType}
                     ref={camera => this.camera = camera}>
-                    <View>
-                    <Fun/>
-                    </View>
-                    <TouchableOpacity style={styles.backbutton}
+                </Camera>
+                <View style={styles.graf}>
+                <Fun/>
+                <View style={styles.bot}>
+                <TouchableOpacity style={styles.backbutton}
                         onPress={ () => this.setState({
                             bool: false
                         })
                         }>
                         <Ionicons
                             name="md-arrow-back"
-                            color="white"
+                            color="black"
                             size={30}
                         />
                     </TouchableOpacity>
@@ -71,10 +74,14 @@ export default class CameraPage extends React.Component {
                     cameraType={cameraType}
                     setCameraType={this.setCameraType}
                 />
-                </Camera>
-                : <Button onPress={() => this._switch()} title="camera"/>}
-            </View> 
-
+                </View>                
+                </View>
+                </View>
+                : 
+                <View>
+                <Button onPress={() => this._switch()} title="camera"/>
+                </View>}
+            </View>
             </React.Fragment>
         );
     };
