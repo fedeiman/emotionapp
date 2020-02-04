@@ -6,6 +6,7 @@ import styles from './styles.js';
   const dat = require('./data.json')
 
   const screenWidth = Dimensions.get("window").width;
+  const screenheight = Dimensions.get("window").height;
 
   const chartConfig = {
     backgroundGradientFrom: "#1E2923",
@@ -111,7 +112,7 @@ import styles from './styles.js';
               <LineChart
                 data={this.data}
                 width={screenWidth}
-                height={250}
+                height={screenheight/2.6}
                 chartConfig={chartConfig}
                 bezier
               />
