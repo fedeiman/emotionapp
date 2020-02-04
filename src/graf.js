@@ -1,7 +1,10 @@
 import React, {Component} from 'react';
 import {Text, View, Button, TouchableOpacity, Dimensions} from 'react-native';
 import {LineChart} from "react-native-chart-kit";
+  
   const dat = require('./data.json')
+
+  const screenWidth = Dimensions.get("window").width;
 
   const chartConfig = {
     backgroundGradientFrom: "#1E2923",
@@ -12,8 +15,6 @@ import {LineChart} from "react-native-chart-kit";
     strokeWidth: 2, // optional, default 3
     barPercentage: 0.5
   };
-
-  const screenWidth = Dimensions.get("window").width;
 
   edit = () => {
     a = Math.random() * 100
@@ -54,19 +55,26 @@ import {LineChart} from "react-native-chart-kit";
     }
 
     datos = () => {
-        if(this.j < (dat.info.length)){
-          for(let i=0; i < 5; i++){
-            this.dataHappy.splice(i, 1, this.dataHappy[i+1])
-            this.dataSad.splice(i, 1, this.dataSad[i+1])
-            this.dataNeutral.splice(i, 1, this.dataNeutral[i+1])
-            this.dataAngry.splice(i, 1, this.dataAngry[i+1])
-          }
-        this.dataHappy.splice(5, 1, dat.info[this.j].Happy)
-        this.dataSad.splice(5, 1, dat.info[this.j].Sad)
-        this.dataNeutral.splice(5, 1, dat.info[this.j].Neutral)
-        this.dataAngry.splice(5, 1, dat.info[this.j].Angry)
-        this.j ++
+        for(let i=0; i < 5; i++){
+          this.dataHappy.splice(i, 1, this.dataHappy[i+1])
+          this.dataSad.splice(i, 1, this.dataSad[i+1])
+          this.dataNeutral.splice(i, 1, this.dataNeutral[i+1])
+          this.dataAngry.splice(i, 1, this.dataAngry[i+1])
         }
+        if(this.j < (dat.info.length)){
+          n = dat.info[this.j]
+          this.dataHappy.splice(5, 1, n.Happy)
+          this.dataSad.splice(5, 1, n.Sad)
+          this.dataNeutral.splice(5, 1, n.Neutral)
+          this.dataAngry.splice(5, 1, n.Angry)
+        }
+        else{
+          this.dataHappy.splice(5, 1, 0)
+          this.dataSad.splice(5, 1, 0)
+          this.dataNeutral.splice(5, 1, 0)
+          this.dataAngry.splice(5, 1, 0)
+        }
+        this.j ++
         this.data = {
         datasets : [
           { 
@@ -90,8 +98,7 @@ import {LineChart} from "react-native-chart-kit";
             strokeWidth: 2 // optional
           }
         ],
-        legend: ["Happy", "Sad", "Neutral", "Angry"],
-        legendFontSize: 85
+        legend: ["Happy", "Sad", "Neutral", "Angry"]
       }
     }
   
@@ -105,40 +112,35 @@ import {LineChart} from "react-native-chart-kit";
       if(this.state.reset) {
         this.datos()
       }
-      return(
-        <View style={{
-          flex: 1,
-          flexDirection: 'column',
-          justifyContent: 'center'}}>
-          {this.state.bool
-          ? 
-          <View>
-            <Button
-              title='Click me'
-              onPress={() => this._switch()}
-            />
+        return(
+          <View style={{
+            flex: 1,
+            flexDirection: 'column',
+            justifyContent: 'center'}}>
+            {this.state.bool
+            ? 
+            <View>
+              <Button
+                title='Click me'
+                onPress={() => this._switch()}
+              />
+            </View>
+            :
+            <View>
+              <LineChart
+                data={this.data}
+                width={screenWidth}
+                height={256}
+                verticalLabelRotation={30}
+                chartConfig={chartConfig}
+                bezier
+              />
+              <TouchableOpacity
+                onPress={() => {this.setState({bool: true})}}>
+              <Text> Back </Text>
+              </TouchableOpacity>
+            </View>}
           </View>
-          :
-          <View>
-            <LineChart
-              data={this.data}
-              //legend={{enable:true, position:'ABOVE_CHART_BOTTOM',direction:"LEFT_TO_RIGHT", legendForm: "CIRCLE"}}
-              width={screenWidth}
-              showLegend={false}
-              height={256}
-              verticalLabelRotation={30}
-              chartConfig={chartConfig}
-              bezier
-            />
-            <TouchableOpacity
-              onPress={() => {this.setState({bool: true})}}>
-            <Text> Back </Text>
-            </TouchableOpacity>
-          </View>}
-        </View>
-      );
+        );
       }
     }
-
-/* 
-    horizontalAlignment, verticalAlignment, orientation, drawInside, direction. */
