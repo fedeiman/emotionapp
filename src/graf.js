@@ -3,7 +3,7 @@ import {View, Dimensions} from 'react-native';
 import {LineChart} from "react-native-chart-kit";
 import styles from './styles.js';
   
-  const dat = require('./data.json')
+ /*  const dat = require('./data.json')
 
   const screenWidth = Dimensions.get("window").width;
   const screenheight = Dimensions.get("window").height;
@@ -35,9 +35,9 @@ import styles from './styles.js';
       "Angry": d
     });
   }
-
-  export default class Fun extends Component {
-
+ */
+  export default function Fun({data, chartConfig, screenWidth, screenheight} = props){
+/* 
     data = {};
     dataHappy = new Array(6).fill(0);
     dataSad = new Array(6).fill(0);
@@ -48,35 +48,35 @@ import styles from './styles.js';
     state = {reset: true}
 
     componentDidMount(){
-      setInterval(() => (
+        timer = setInterval(() => (
         this.setState(previousState => (
-          { reset: !previousState.reset}
+          {reset: !previousState.reset}
         )),
         edit()
         ), 1000); 
-    }
+      }
 
     datos = () => {
-        for(let i=0; i < 5; i++){
-          this.dataHappy.splice(i, 1, this.dataHappy[i+1])
-          this.dataSad.splice(i, 1, this.dataSad[i+1])
-          this.dataNeutral.splice(i, 1, this.dataNeutral[i+1])
-          this.dataAngry.splice(i, 1, this.dataAngry[i+1])
-        }
-        if(this.j < (dat.info.length)){
-          this.dataHappy.splice(5, 1, dat.info[this.j].Happy)
-          this.dataSad.splice(5, 1, dat.info[this.j].Sad)
-          this.dataNeutral.splice(5, 1, dat.info[this.j].Neutral)
-          this.dataAngry.splice(5, 1, dat.info[this.j].Angry)
-        }
-        else{
-          this.dataHappy.splice(5, 1, 0)
-          this.dataSad.splice(5, 1, 0)
-          this.dataNeutral.splice(5, 1, 0)
-          this.dataAngry.splice(5, 1, 0)
-        }
-        this.j ++
-        this.data = {
+      for(let i=0; i < 5; i++){
+        this.dataHappy.splice(i, 1, this.dataHappy[i+1])
+        this.dataSad.splice(i, 1, this.dataSad[i+1])
+        this.dataNeutral.splice(i, 1, this.dataNeutral[i+1])
+        this.dataAngry.splice(i, 1, this.dataAngry[i+1])
+      }
+      if(this.j < (dat.info.length)){
+        this.dataHappy.splice(5, 1, dat.info[this.j].Happy)
+        this.dataSad.splice(5, 1, dat.info[this.j].Sad)
+        this.dataNeutral.splice(5, 1, dat.info[this.j].Neutral)
+        this.dataAngry.splice(5, 1, dat.info[this.j].Angry)
+      }
+      else{
+        this.dataHappy.splice(5, 1, 0)
+        this.dataSad.splice(5, 1, 0)
+        this.dataNeutral.splice(5, 1, 0)
+        this.dataAngry.splice(5, 1, 0)
+      }
+      this.j ++
+      this.data = {
         datasets : [
           { 
             data: this.dataHappy, 
@@ -101,16 +101,12 @@ import styles from './styles.js';
         ],
         legend: ["Happy", "Sad", "Neutral", "Angry"]
       }
-    }
-  
-    render() {
-      if(this.state.reset) {
-        this.datos()
-      }
+    } */
+
         return(
           <View style={styles.graf}>
               <LineChart
-                data={this.data}
+                data={data}
                 width={screenWidth}
                 height={screenheight/2.6}
                 chartConfig={chartConfig}
@@ -118,5 +114,4 @@ import styles from './styles.js';
               />
           </View>
         );
-      }
     }
