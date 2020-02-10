@@ -78,7 +78,6 @@ export default class CameraPage extends React.Component {
   stop = () => {
     if(!this.Start){
      clearInterval(this.counter);
-     console.log("Stop")
     }
     else{
     this.counter = setInterval(this.timer, 1000);
@@ -88,7 +87,6 @@ export default class CameraPage extends React.Component {
   timer = () => {
     edit();
     this.datos();
-    console.log("Run...")
   }
 
   _switch = () => {this.setState({bool: true});
