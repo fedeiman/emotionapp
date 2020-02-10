@@ -1,12 +1,14 @@
 // src/camera.page.js file
 import React, {Component} from 'react';
-import { Camera } from 'expo-camera';
+//import { Camera } from 'expo-camera';
 import { View, Text, Button, TouchableOpacity, Dimensions} from 'react-native';
 import * as Permissions from 'expo-permissions';
 import { Ionicons } from '@expo/vector-icons';
 import Toolbar from './toolbar.component';
 import styles from './styles';
 import Fun from './graf';
+import Camera from 'react-native-facerecognition';
+
 
 const dat = require('./data.json')
 
@@ -161,11 +163,30 @@ export default class CameraPage extends React.Component {
                 <View style = {styles.button}>
                     {this.state.bool
                     ?<View style={styles.preview}>
-                        <Camera
+                         <Camera
                             style={styles.preview}
                             type={cameraType}
                             ref={camera => this.camera = camera}>   
-                        </Camera>
+                        </Camera> 
+                       {/* <Camera
+                            ref={(cam) => {
+                              this.camera = cam;
+                            }}
+                            style={styles.preview}
+                            aspect={Camera.constants.Aspect.fill}
+                            captureQuality={Camera.constants.CaptureQuality.high}
+                            touchToFocus
+                            torchMode={Camera.constants.TorchMode.on}
+                            rotateMode={Camera.constants.RotateMode.on}
+                            cameraType={Camera.constants.CameraType.front}
+                            model = {Camera.constants.Model.lbp}
+                            dataset
+                            distance = {200}
+                            onTrained = {this.onTrained}
+                            onRecognized = {this.onRecognized}
+                            onUntrained = {this.onUntrained}
+                            onUnrecognized = {this.onUnrecognized}
+                          />*/}
                         <View style={styles.graf}>
                             <Fun
                                 data={this.data}
