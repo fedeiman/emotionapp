@@ -7,6 +7,9 @@ import { Ionicons } from '@expo/vector-icons';
 import Toolbar from './toolbar.component';
 import styles from './styles';
 import Fun from './graf';
+import { MaterialIcons } from '@expo/vector-icons';
+
+const landmarkSize = 2;
 
 const dat = require('./data.json')
 
@@ -63,8 +66,79 @@ export default class CameraPage extends React.Component {
       cameraType: null,
       hasCameraPermission: null,
       bool: false,
+      faceDetecting: false,
+      faces: [],
+
   };
 
+  toggleFaceDetection = () => this.setState({ faceDetecting: !this.state.faceDetecting });
+
+  onFacesDetected = ({ faces }) => this.setState({ faces });
+  onFaceDetectionError = state => console.warn('Faces detection error:', state);
+
+
+  renderFace({ bounds, rollAngle, yawAngle }) {
+    return (
+      <View
+        transform={[
+          { perspective: 600 },
+          { rotateZ: `${rollAngle.toFixed(0)}deg` },
+          { rotateY: `${yawAngle.toFixed(0)}deg` },
+        ]}
+        style={[
+          styles.face,
+          {
+            ...bounds.size,
+            left: bounds.origin.x,
+            top: bounds.origin.y,
+          },
+        ]}>
+        <Text style={styles.faceText}>rollAngle: {rollAngle.toFixed(0)}</Text>
+        <Text style={styles.faceText}>yawAngle: {yawAngle.toFixed(0)}</Text>
+      </View>
+    );
+  }
+
+  renderLandmarksOfFace(face) {
+    const renderLandmark = position =>
+      position && (
+        <View
+          style={[
+            styles.landmark,
+            {
+              left: position.x - landmarkSize / 2,
+              top: position.y - landmarkSize / 2,
+            },
+          ]}
+        />
+      );
+    return (
+      <View key={`landmarks-${face.faceID}`}>
+        {renderLandmark(face.leftEyePosition)}
+        {renderLandmark(face.rightEyePosition)}
+        {renderLandmark(face.leftEarPosition)}
+        {renderLandmark(face.rightEarPosition)}
+        {renderLandmark(face.leftCheekPosition)}
+        {renderLandmark(face.rightCheekPosition)}
+        {renderLandmark(face.leftMouthPosition)}
+        {renderLandmark(face.mouthPosition)}
+        {renderLandmark(face.rightMouthPosition)}
+        {renderLandmark(face.noseBasePosition)}
+        {renderLandmark(face.bottomMouthPosition)}
+      </View>
+    );
+  }
+
+  renderFaces = () => 
+  <View style={styles.facesContainer} pointerEvents="none">
+    {this.state.faces.map(this.renderFace)}
+  </View>
+
+renderLandmarks = () => 
+  <View style={styles.facesContainer} pointerEvents="none">
+    {this.state.faces.map(this.renderLandmarksOfFace)}
+  </View>
+  
   setCameraType = (cameraType) => this.setState({ cameraType });
 
   async componentDidMount() {
@@ -166,8 +240,15 @@ export default class CameraPage extends React.Component {
                         <Camera
                             style={styles.preview}
                             type={cameraType}
-                            ref={camera => this.camera = camera}>   
+                            ref={camera => this.camera = camera}
+                            onFacesDetected={this.state.faceDetecting ? this.onFacesDetected : undefined}
+                            onFaceDetectionError={this.onFaceDetectionError}>   
                         </Camera>
+                        <TouchableOpacity onPress={this.toggleFaceDetection}>
+                          <MaterialIcons name="tag-faces" size={32} color={this.state.faceDetecting ? "white" : "#858585" } />
+                        </TouchableOpacity>
+                        {this.state.faceDetecting && this.renderFaces()}
+                        {this.state.faceDetecting && this.renderLandmarks()}
                         <View style={styles.graf}>
                             <Fun
                                 data={this.data}

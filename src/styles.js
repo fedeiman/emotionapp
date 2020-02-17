@@ -2,6 +2,7 @@
 import { StyleSheet, Dimensions } from 'react-native';
 
 const { width: winWidth, height: winHeight } = Dimensions.get('window');
+const landmarkSize = 2;
 
 export default StyleSheet.create({
     preview: {
@@ -9,6 +10,38 @@ export default StyleSheet.create({
       flexDirection: 'column',
       justifyContent: 'space-around',
     },
+    facesContainer: {
+        position: 'absolute',
+        bottom: 0,
+        right: 0,
+        left: 0,
+        top: 0,
+      },
+      landmark: {
+        width: landmarkSize,
+        height: landmarkSize,
+        position: 'absolute',
+        backgroundColor: 'red',
+      },
+      faceText: {
+        color: '#FFD700',
+        fontWeight: 'bold',
+        textAlign: 'center',
+        margin: 10,
+        backgroundColor: 'transparent',
+      },
+      row: {
+        flexDirection: 'row',
+      },
+      face: {
+        padding: 10,
+        borderWidth: 2,
+        borderRadius: 2,
+        position: 'absolute',
+        borderColor: '#FFD700',
+        justifyContent: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      },
     graf: {
         display:'flex',
         flex: 1.5,
