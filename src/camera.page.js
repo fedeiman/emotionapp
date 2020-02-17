@@ -9,8 +9,6 @@ import styles from './styles';
 import Fun from './graf';
 import { MaterialIcons } from '@expo/vector-icons';
 
-const landmarkSize = 2;
-
 const dat = require('./data.json')
 
 const screenWidth = Dimensions.get("window").width;
@@ -71,17 +69,16 @@ export default class CameraPage extends React.Component {
 
   };
 
-  toggleFaceDetection = () => this.setState(
-    { faceDetecting: !this.state.faceDetecting });
+  toggleFaceDetection = () => this.setState({ faceDetecting: !this.state.faceDetecting });
 
   onFacesDetected = ({ faces }) => this.setState({ faces });
-
   onFaceDetectionError = state => console.warn('Faces detection error:', state);
 
 
-  renderFace({ bounds, rollAngle, yawAngle }) {
+  renderFace({ bounds, faceID, rollAngle, yawAngle }) {
     return (
       <View
+      key={faceID}
         transform={[
           { perspective: 600 },
           { rotateZ: `${rollAngle.toFixed(0)}deg` },
@@ -95,12 +92,8 @@ export default class CameraPage extends React.Component {
             top: bounds.origin.y,
           },
         ]}>
-        <Text style={styles.faceText}>
-          rollAngle: {rollAngle.toFixed(0)}
-        </Text>
-        <Text style={styles.faceText}>
-          yawAngle: {yawAngle.toFixed(0)}
-        </Text>
+        <Text style={styles.faceText}>rollAngle: {rollAngle.toFixed(0)}</Text>
+        <Text style={styles.faceText}>yawAngle: {yawAngle.toFixed(0)}</Text>
       </View>
     );
   }
@@ -148,17 +141,17 @@ renderLandmarks = () =>
   setCameraType = (cameraType) => this.setState({ cameraType });
 
   async componentDidMount() {
-    const camera = await Permissions.askAsync(Permissions.CAMERA);
-    const audio = await Permissions.askAsync(Permissions.AUDIO_RECORDING);
-    const hasCameraPermission = (camera.status === 'granted' && audio.status === 'granted');
-    this.setState({ hasCameraPermission });
-    this.datos();
+      const camera = await Permissions.askAsync(Permissions.CAMERA);
+      const audio = await Permissions.askAsync(Permissions.AUDIO_RECORDING);
+      const hasCameraPermission = (camera.status === 'granted' && audio.status === 'granted');
+      this.setState({ hasCameraPermission });
+      this.datos();
   };
 
   stop = () => {
     if(!this.Start){
      clearInterval(this.counter);
-     //console.log("Stop")
+     console.log("Stop")
     }
     else{
     this.counter = setInterval(this.timer, 1000);
@@ -168,7 +161,7 @@ renderLandmarks = () =>
   timer = () => {
     edit();
     this.datos();
-    //console.log("Run...")
+    console.log("Run...")
   }
 
   _switch = () => {this.setState({bool: true});
@@ -237,54 +230,51 @@ renderLandmarks = () =>
     else if (hasCameraPermission === false) {
       return <Text> Access to camera has been denied. </Text>;
     }
-    return (
-      <React.Fragment>
-        <View style = {styles.button}>
-          {this.state.bool
-          ? <View style={styles.preview}>
-              <Camera
-                style={styles.preview}
-                type={cameraType}
-                ref={camera => this.camera = camera}
-                onFacesDetected={this.state.faceDetecting ? this.onFacesDetected : undefined}
-                onFaceDetectionError={this.onFaceDetectionError}>   
-              </Camera>
-              {this.state.faceDetecting && this.renderFaces()}
-              {this.state.faceDetecting && this.renderLandmarks()}
-              <View style={styles.graf}>
-                <Fun
-                  data={this.data}
-                  chartConfig={chartConfig}
-                  screenWidth={screenWidth}
-                  screenheight={screenheight}
-                />
-                <View style={styles.bot}>
-                  <TouchableOpacity style={styles.backbutton}
-                    onPress={ () =>this._switch2()}>
-                    <Ionicons
-                      name="md-arrow-back"
-                      color="black"
-                      size={30}
-                    />
-                  </TouchableOpacity>
-                  <TouchableOpacity onPress={this.toggleFaceDetection}>
-                    <MaterialIcons 
-                      name="tag-faces"
-                      size={32}
-                      color={this.state.faceDetecting ? "white" : "#858585" }
 
-                    />
-                  </TouchableOpacity>
-                  <Toolbar 
-                    cameraType={cameraType}
-                    setCameraType={this.setCameraType}/>
-                  </View>                
+        return (
+            <React.Fragment>
+                <View style = {styles.button}>
+                    {this.state.bool
+                    ?<View style={styles.preview}>
+                        <Camera
+                            style={styles.preview}
+                            type={cameraType}
+                            ref={camera => this.camera = camera}
+                            onFacesDetected={this.state.faceDetecting ? this.onFacesDetected : undefined}
+                            onFaceDetectionError={this.onFaceDetectionError}>   
+                        </Camera>
+                        <TouchableOpacity onPress={this.toggleFaceDetection}>
+                          <MaterialIcons name="tag-faces" size={32} color={this.state.faceDetecting ? "white" : "#858585" } />
+                        </TouchableOpacity>
+                        {this.state.faceDetecting && this.renderFaces()}
+                        {this.state.faceDetecting && this.renderLandmarks()}
+                        <View style={styles.graf}>
+                            <Fun
+                                data={this.data}
+                                chartConfig={chartConfig}
+                                screenWidth={screenWidth}
+                                screenheight={screenheight}
+                            />
+                            <View style={styles.bot}>
+                                <TouchableOpacity style={styles.backbutton}
+                                    onPress={ () =>this._switch2()}>
+                                <Ionicons
+                                    name="md-arrow-back"
+                                    color="black"
+                                    size={30}
+                                />
+                                </TouchableOpacity>
+                                <Toolbar 
+                                    cameraType={cameraType}
+                                    setCameraType={this.setCameraType}/>
+                            </View>                
+                        </View>
+                    </View>
+                    :<View>
+                        <Button onPress={() => this._switch()} title="camera"/>
+                    </View>}
                 </View>
-              </View>
-            :<View>
-          <Button onPress={() => this._switch()} title="camera"/>
-        </View>}
-      </View>
-    </React.Fragment>);
-  };
+            </React.Fragment>
+        );
+    };
 };
