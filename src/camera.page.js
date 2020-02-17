@@ -241,7 +241,8 @@ renderLandmarks = () =>
                             type={cameraType}
                             ref={camera => this.camera = camera}
                             onFacesDetected={this.state.faceDetecting ? this.onFacesDetected : undefined}
-                            onFaceDetectionError={this.onFaceDetectionError}>   
+                            onFaceDetectionError={this.onFaceDetectionError}
+                            >   
                         </Camera>
                         <TouchableOpacity onPress={this.toggleFaceDetection}>
                           <MaterialIcons name="tag-faces" size={32} color={this.state.faceDetecting ? "white" : "#858585" } />
