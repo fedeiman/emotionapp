@@ -8,12 +8,12 @@ import Toolbar from './toolbar.component';
 import styles from './styles';
 import Fun from './graf';
 import { MaterialIcons } from '@expo/vector-icons';
+import * as FaceDetector from 'expo-face-detector';
 
 const dat = require('./data.json')
 
 const screenWidth = Dimensions.get("window").width;
 const screenheight = Dimensions.get("window").height;
-
 const chartConfig = {
   backgroundGradientFrom: "#1E2923",
   backgroundGradientFromOpacity: 0,
@@ -66,19 +66,17 @@ export default class CameraPage extends React.Component {
       bool: false,
       faceDetecting: false,
       faces: [],
-
   };
 
   toggleFaceDetection = () => this.setState({ faceDetecting: !this.state.faceDetecting });
 
   onFacesDetected = ({ faces }) => this.setState({ faces });
   onFaceDetectionError = state => console.warn('Faces detection error:', state);
-
-
-  renderFace({ bounds, faceID, rollAngle, yawAngle }) {
+  
+  renderFace({ bounds, faceID, rollAngle, yawAngle, smilingProbability }) {
     return (
       <View
-      key={faceID}
+        key={faceID}
         transform={[
           { perspective: 600 },
           { rotateZ: `${rollAngle.toFixed(0)}deg` },
@@ -92,9 +90,12 @@ export default class CameraPage extends React.Component {
             top: bounds.origin.y,
           },
         ]}>
+        <Text style={styles.faceText}>smile: {smilingProbability}</Text>
+        <Text style={styles.faceText}>ID: {faceID}</Text>
         <Text style={styles.faceText}>rollAngle: {rollAngle.toFixed(0)}</Text>
         <Text style={styles.faceText}>yawAngle: {yawAngle.toFixed(0)}</Text>
       </View>
+
     );
   }
 
@@ -129,14 +130,14 @@ export default class CameraPage extends React.Component {
   }
 
   renderFaces = () => 
-  <View style={styles.facesContainer} pointerEvents="none">
-    {this.state.faces.map(this.renderFace)}
-  </View>
+    <View style={styles.facesContainer} pointerEvents="none">
+      {this.state.faces.map(this.renderFace)}
+    </View>
 
-renderLandmarks = () => 
-  <View style={styles.facesContainer} pointerEvents="none">
-    {this.state.faces.map(this.renderLandmarksOfFace)}
-  </View>
+  renderLandmarks = () => 
+    <View style={styles.facesContainer} pointerEvents="none">
+      {this.state.faces.map(this.renderLandmarksOfFace)}
+    </View>
   
   setCameraType = (cameraType) => this.setState({ cameraType });
 
@@ -242,6 +243,13 @@ renderLandmarks = () =>
                             ref={camera => this.camera = camera}
                             onFacesDetected={this.state.faceDetecting ? this.onFacesDetected : undefined}
                             onFaceDetectionError={this.onFaceDetectionError}
+                            faceDetectorSettings={{
+                              mode: FaceDetector.Constants.Mode.fast,
+                              detectLandmarks: FaceDetector.Constants.Landmarks.none,
+                              runClassifications: FaceDetector.Constants.Classifications.all,
+                              minDetectionInterval: 100,
+                              tracking: true,
+                            }}
                             >   
                         </Camera>
                         <TouchableOpacity onPress={this.toggleFaceDetection}>

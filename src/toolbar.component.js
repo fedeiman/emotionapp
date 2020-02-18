@@ -13,7 +13,7 @@ export default ({
 }) => (
         <TouchableOpacity
             onPress={() => setCameraType(
-                cameraType === CameraTypes.back ? CameraTypes.front : CameraTypes.back
+                cameraType === CameraTypes.front ? CameraTypes.back : CameraTypes.front
             )}>
             <Ionicons
                 name="md-reverse-camera"
