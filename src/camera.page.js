@@ -152,7 +152,7 @@ export default class CameraPage extends React.Component {
   stop = () => {
     if(!this.Start){
      clearInterval(this.counter);
-     console.log("Stop")
+     //console.log("Stop")
     }
     else{
     this.counter = setInterval(this.timer, 1000);
@@ -162,7 +162,7 @@ export default class CameraPage extends React.Component {
   timer = () => {
     edit();
     this.datos();
-    console.log("Run...")
+    //console.log("Run...")
   }
 
   _switch = () => {this.setState({bool: true});
@@ -252,9 +252,6 @@ export default class CameraPage extends React.Component {
                             }}
                             >   
                         </Camera>
-                        <TouchableOpacity onPress={this.toggleFaceDetection}>
-                          <MaterialIcons name="tag-faces" size={32} color={this.state.faceDetecting ? "white" : "#858585" } />
-                        </TouchableOpacity>
                         {this.state.faceDetecting && this.renderFaces()}
                         {this.state.faceDetecting && this.renderLandmarks()}
                         <View style={styles.graf}>
@@ -272,6 +269,9 @@ export default class CameraPage extends React.Component {
                                     color="black"
                                     size={30}
                                 />
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={this.toggleFaceDetection}>
+                                  <MaterialIcons name="tag-faces" size={32} color={this.state.faceDetecting ? "black" : "#858585" } />
                                 </TouchableOpacity>
                                 <Toolbar 
                                     cameraType={cameraType}
