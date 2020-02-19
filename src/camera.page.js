@@ -73,7 +73,7 @@ export default class CameraPage extends React.Component {
   onFacesDetected = ({ faces }) => this.setState({ faces });
   onFaceDetectionError = state => console.warn('Faces detection error:', state);
   
-  renderFace({ bounds, faceID, rollAngle, yawAngle, smilingProbability }) {
+  renderFace({ bounds, faceID, rollAngle, yawAngle, smilingProbability,leftEyeOpenProbability,rightEyeOpenProbability }) {
     return (
       <View
         key={faceID}
@@ -90,10 +90,9 @@ export default class CameraPage extends React.Component {
             top: bounds.origin.y,
           },
         ]}>
-        <Text style={styles.faceText}>smile: {smilingProbability}</Text>
-        <Text style={styles.faceText}>ID: {faceID}</Text>
-        <Text style={styles.faceText}>rollAngle: {rollAngle.toFixed(0)}</Text>
-        <Text style={styles.faceText}>yawAngle: {yawAngle.toFixed(0)}</Text>
+        <Text style={styles.faceText}>smile: {smilingProbability*100}</Text>
+        <Text style={styles.faceText}>left eye: {leftEyeOpenProbability*100}</Text>
+        <Text style={styles.faceText}>right eye: {rightEyeOpenProbability*100}</Text>
       </View>
 
     );
@@ -272,7 +271,7 @@ export default class CameraPage extends React.Component {
                   />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={this.toggleFaceDetection}>
-                  <MaterialIcons name="tag-faces" size={32} color={this.state.faceDetecting ? "black" : "#858585" } />
+                  <MaterialIcons name="tag-faces" size={32} color={this.state.faceDetecting ? "green" : "black" } />
                 </TouchableOpacity>
                 <Toolbar 
                   cameraType={cameraType}
