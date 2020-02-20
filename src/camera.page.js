@@ -24,29 +24,38 @@ const chartConfig = {
   barPercentage: 0.5
 };
 
+happy = 0;
+lef = 0;
+rig = 0;
+
 edit = (smilingProbability, leftEyeOpenProbability, rightEyeOpenProbability) => {
+  
   a = smilingProbability
   b = leftEyeOpenProbability
   c = rightEyeOpenProbability
-  y = 0;
+  y = 0
 
   a = (a * 100) 
   d = (100 - a)
 
-  if( a >= 0.2000 & a <= 0.3999){
-    u = 0.3999 - a
-    y = ((u * 100)/1.999) *100
+  if( a >= 20.00 & a <= 39.99){
+    u = 39.99 - a
+    y = ((u * 100)/19.99) 
+
   }
-
-  dat.info.push({
-    "Happy": a,
-    "Sad":d,
-    "Neutral": y,
-  });
-
+    dat.info.push({
+      "Happy": a,
+      "Sad":d,
+      "Neutral": y,
+    });
+    console.log(dat.info)
 }
 
-
+hola = (smilingProbability,leftEyeOpenProbability,rightEyeOpenProbability) => {
+  happy = smilingProbability;
+  lef = leftEyeOpenProbability;
+  rig = rightEyeOpenProbability;
+};
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export default class CameraPage extends React.Component {
@@ -59,7 +68,6 @@ export default class CameraPage extends React.Component {
   dataSad = new Array(6).fill(0);
   dataNeutral = new Array(6).fill(0);
   //dataAngry = new Array(6).fill(0);
-
   state = {
       cameraType: null,
       hasCameraPermission: null,
@@ -72,9 +80,9 @@ export default class CameraPage extends React.Component {
 
   onFacesDetected = ({ faces }) => this.setState({ faces });
   onFaceDetectionError = state => console.warn('Faces detection error:', state);
-  
-  renderFace({ bounds, faceID, rollAngle, yawAngle, smilingProbability,leftEyeOpenProbability,rightEyeOpenProbability }) { 
-    edit(smilingProbability, leftEyeOpenProbability, rightEyeOpenProbability)
+
+  renderFace({bounds, faceID, rollAngle, yawAngle, smilingProbability,leftEyeOpenProbability,rightEyeOpenProbability }) { 
+    hola(smilingProbability,leftEyeOpenProbability,rightEyeOpenProbability)
     return (
       <View
         key={faceID}
@@ -94,6 +102,7 @@ export default class CameraPage extends React.Component {
         <Text style={styles.faceText}>smile: {smilingProbability*100}</Text>
         <Text style={styles.faceText}>left eye: {leftEyeOpenProbability*100}</Text>
         <Text style={styles.faceText}>right eye: {rightEyeOpenProbability*100}</Text>
+        
       </View>
     );
   }
@@ -159,7 +168,10 @@ export default class CameraPage extends React.Component {
   }
 
   timer = () => {
-    //edit();
+    console.log(happy)
+    if(!(happy == 0 || lef == 0 || rig == 0)){
+      edit(happy, lef, rig)
+    }
     this.datos();
     //console.log("Run...")
   }
