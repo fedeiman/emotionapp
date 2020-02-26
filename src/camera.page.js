@@ -34,28 +34,30 @@ edit = (smilingProbability, leftEyeOpenProbability, rightEyeOpenProbability) => 
   b = leftEyeOpenProbability
   c = rightEyeOpenProbability
   y = 0
+  d = 0
 
+  e = ((b + c)/2)*100
+  
   a = (a * 100) 
-  d = (100 - a)
 
-  if( a >= 20.00 & a <= 39.99){
+  if(a >= 0.5 & a <= 4.00){
+    u = 4.00 - a
+    d = ((u*100)/3.500)
+  }
+
+  if( a >= 3.000 & a <= 39.99){
     u = 39.99 - a
-    y = ((u * 100)/19.99) 
+    y = ((u * 100)/36.99) 
 
   }
     dat.info.push({
       "Happy": a,
       "Sad":d,
       "Neutral": y,
+      "Eyes": e,
     });
-    console.log(dat.info)
 }
 
-hola = (smilingProbability,leftEyeOpenProbability,rightEyeOpenProbability) => {
-  happy = smilingProbability;
-  lef = leftEyeOpenProbability;
-  rig = rightEyeOpenProbability;
-};
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export default class CameraPage extends React.Component {
@@ -67,7 +69,7 @@ export default class CameraPage extends React.Component {
   dataHappy = new Array(6).fill(0);
   dataSad = new Array(6).fill(0);
   dataNeutral = new Array(6).fill(0);
-  //dataAngry = new Array(6).fill(0);
+  dataEyes = new Array(6).fill(0);
   state = {
       cameraType: null,
       hasCameraPermission: null,
@@ -82,7 +84,9 @@ export default class CameraPage extends React.Component {
   onFaceDetectionError = state => console.warn('Faces detection error:', state);
 
   renderFace({bounds, faceID, rollAngle, yawAngle, smilingProbability,leftEyeOpenProbability,rightEyeOpenProbability }) { 
-    hola(smilingProbability,leftEyeOpenProbability,rightEyeOpenProbability)
+    happy = smilingProbability;
+    lef = leftEyeOpenProbability;
+    rig = rightEyeOpenProbability;
     return (
       <View
         key={faceID}
@@ -168,7 +172,6 @@ export default class CameraPage extends React.Component {
   }
 
   timer = () => {
-    console.log(happy)
     if(!(happy == 0 || lef == 0 || rig == 0)){
       edit(happy, lef, rig)
     }
@@ -190,20 +193,20 @@ export default class CameraPage extends React.Component {
       this.dataHappy.splice(i, 1, this.dataHappy[i+1])
       this.dataSad.splice(i, 1, this.dataSad[i+1])
       this.dataNeutral.splice(i, 1, this.dataNeutral[i+1])
-      //this.dataAngry.splice(i, 1, this.dataAngry[i+1])
+      this.dataEyes.splice(i, 1, this.dataEyes[i+1])
     }
     if(this.j < (dat.info.length)){
       this.dataHappy.splice(5, 1, dat.info[this.j].Happy)
       this.dataSad.splice(5, 1, dat.info[this.j].Sad)
       this.dataNeutral.splice(5, 1, dat.info[this.j].Neutral)
-     // this.dataAngry.splice(5, 1, dat.info[this.j].Angry)
+      this.dataEyes.splice(5, 1, dat.info[this.j].Eyes)
       this.j ++
     }
     else{
       this.dataHappy.splice(5, 1, 0)
       this.dataSad.splice(5, 1, 0)
       this.dataNeutral.splice(5, 1, 0)
-      //this.dataAngry.splice(5, 1, 0)
+      this.dataEyes.splice(5, 1, 0)
     }
     this.data = {
       datasets : [
@@ -222,13 +225,13 @@ export default class CameraPage extends React.Component {
           color: (opacity = 1) => `rgba(255, 0, 0, ${opacity})`, // optional
           strokeWidth: 2 // optional
         },
-        //{
-        //  data:this.dataAngry,
-        //  color: (opacity = 1) => `rgba(0, 0, 255, ${opacity})`, // optional
-        //  strokeWidth: 2 // optional
-       // }
+        {
+          data:this.dataEyes,
+          color: (opacity = 1) => `rgba(0, 0, 255, ${opacity})`, // optional
+          strokeWidth: 2 // optional
+        }
       ],
-      legend: ["Happy", "Sad", "Neutral"]
+      legend: ["Happy", "Sad", "Neutral", "Open Eyes"]
     }
     this.forceUpdate();
   }
