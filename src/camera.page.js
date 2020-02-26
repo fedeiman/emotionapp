@@ -39,17 +39,9 @@ edit = (smilingProbability, leftEyeOpenProbability, rightEyeOpenProbability) => 
   e = ((b + c)/2)*100
   
   a = (a * 100) 
+ 
+  y = 100 - a
 
-  if(a >= 0.5 & a <= 4.00){
-    u = 4.00 - a
-    d = ((u*100)/3.500)
-  }
-
-  if( a >= 3.000 & a <= 39.99){
-    u = 39.99 - a
-    y = ((u * 100)/36.99) 
-
-  }
     dat.info.push({
       "Happy": a,
       "Sad":d,
@@ -58,6 +50,14 @@ edit = (smilingProbability, leftEyeOpenProbability, rightEyeOpenProbability) => 
     });
 }
 
+cero = () => {
+  dat.info.push({
+    "Happy": 0,
+    "Sad":0,
+    "Neutral": 0,
+    "Eyes": 0,
+  });
+}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export default class CameraPage extends React.Component {
@@ -83,10 +83,25 @@ export default class CameraPage extends React.Component {
   onFacesDetected = ({ faces }) => this.setState({ faces });
   onFaceDetectionError = state => console.warn('Faces detection error:', state);
 
-  renderFace({bounds, faceID, rollAngle, yawAngle, smilingProbability,leftEyeOpenProbability,rightEyeOpenProbability }) { 
-    happy = smilingProbability;
-    lef = leftEyeOpenProbability;
-    rig = rightEyeOpenProbability;
+  renderFace = ({bounds, faceID, rollAngle, yawAngle, smilingProbability,leftEyeOpenProbability,rightEyeOpenProbability }) => {       
+    if(this.state.faces.length == 1 || this.state.faces.length == 0 ){
+      happy = smilingProbability;
+      lef = leftEyeOpenProbability;
+      rig = rightEyeOpenProbability;
+      }
+      else{
+        happy = 0;
+        lef = 0;
+        rig = 0;
+        for(let i = 0; i < this.state.faces.length; i++ ){
+          happy = this.state.faces[i].smilingProbability + happy
+          lef = this.state.faces[i].leftEyeOpenProbability + lef
+          rig = this.state.faces[i].rightEyeOpenProbability + rig
+        }
+        happy = happy/this.state.faces.length
+        rig = rig/this.state.faces.length
+        lef = lef/this.state.faces.length
+      }
     return (
       <View
         key={faceID}
@@ -103,10 +118,9 @@ export default class CameraPage extends React.Component {
             top: bounds.origin.y,
           },
         ]}>
-        <Text style={styles.faceText}>smile: {smilingProbability*100}</Text>
-        <Text style={styles.faceText}>left eye: {leftEyeOpenProbability*100}</Text>
-        <Text style={styles.faceText}>right eye: {rightEyeOpenProbability*100}</Text>
-        
+        <Text style={styles.faceText}>smile: {(smilingProbability*100).toFixed(3).slice(0,-1)}</Text>
+        <Text style={styles.faceText}>left eye: {(leftEyeOpenProbability*100).toFixed(3).slice(0,-1)}</Text>
+        <Text style={styles.faceText}>right eye: {(rightEyeOpenProbability*100).toFixed(3).slice(0,-1)}</Text>
       </View>
     );
   }
@@ -143,8 +157,8 @@ export default class CameraPage extends React.Component {
 
   renderFaces = () => 
     <View style={styles.facesContainer} pointerEvents="none">
-      {this.state.faces.map(this.renderFace)}
-    </View>
+      {this.state.faces.map(this.renderFace)}    
+      </View>
 
   renderLandmarks = () => 
     <View style={styles.facesContainer} pointerEvents="none">
@@ -172,8 +186,11 @@ export default class CameraPage extends React.Component {
   }
 
   timer = () => {
-    if(!(happy == 0 || lef == 0 || rig == 0)){
+    if(this.state.faceDetecting){
       edit(happy, lef, rig)
+    }
+    else{
+      cero()
     }
     this.datos();
     //console.log("Run...")
