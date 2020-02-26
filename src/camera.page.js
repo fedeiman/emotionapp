@@ -34,7 +34,6 @@ edit = (smilingProbability, leftEyeOpenProbability, rightEyeOpenProbability) => 
   b = leftEyeOpenProbability
   c = rightEyeOpenProbability
   y = 0
-  d = 0
 
   e = ((b + c)/2)*100
   
@@ -44,20 +43,11 @@ edit = (smilingProbability, leftEyeOpenProbability, rightEyeOpenProbability) => 
 
     dat.info.push({
       "Happy": a,
-      "Sad":d,
       "Neutral": y,
       "Eyes": e,
     });
 }
 
-cero = () => {
-  dat.info.push({
-    "Happy": 0,
-    "Sad":0,
-    "Neutral": 0,
-    "Eyes": 0,
-  });
-}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export default class CameraPage extends React.Component {
@@ -67,7 +57,6 @@ export default class CameraPage extends React.Component {
   counter = {};
   camera = null;
   dataHappy = new Array(6).fill(0);
-  dataSad = new Array(6).fill(0);
   dataNeutral = new Array(6).fill(0);
   dataEyes = new Array(6).fill(0);
   state = {
@@ -189,9 +178,6 @@ export default class CameraPage extends React.Component {
     if(this.state.faceDetecting){
       edit(happy, lef, rig)
     }
-    else{
-      cero()
-    }
     this.datos();
     //console.log("Run...")
   }
@@ -208,47 +194,39 @@ export default class CameraPage extends React.Component {
   datos = () => {
     for(let i=0; i < 5; i++){
       this.dataHappy.splice(i, 1, this.dataHappy[i+1])
-      this.dataSad.splice(i, 1, this.dataSad[i+1])
       this.dataNeutral.splice(i, 1, this.dataNeutral[i+1])
       this.dataEyes.splice(i, 1, this.dataEyes[i+1])
     }
     if(this.j < (dat.info.length)){
       this.dataHappy.splice(5, 1, dat.info[this.j].Happy)
-      this.dataSad.splice(5, 1, dat.info[this.j].Sad)
       this.dataNeutral.splice(5, 1, dat.info[this.j].Neutral)
       this.dataEyes.splice(5, 1, dat.info[this.j].Eyes)
       this.j ++
     }
     else{
       this.dataHappy.splice(5, 1, 0)
-      this.dataSad.splice(5, 1, 0)
       this.dataNeutral.splice(5, 1, 0)
       this.dataEyes.splice(5, 1, 0)
     }
     this.data = {
       datasets : [
-        { 
-          data: this.dataHappy, 
-          color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // optional
-          strokeWidth: 2 // optional
-        },
         {
-          data:this.dataSad,
-          color: (opacity = 1) => `rgba(255, 255, 0, ${opacity})`, // optional
+          data: this.dataHappy, 
+          color: (opacity = 1) => `rgba(237, 202, 49, ${opacity})`, // optional
           strokeWidth: 2 // optional
         },
         {
           data:this.dataNeutral,
-          color: (opacity = 1) => `rgba(255, 0, 0, ${opacity})`, // optional
+          color: (opacity = 1) => `rgba(73, 104, 55, ${opacity})`, // optional
           strokeWidth: 2 // optional
         },
         {
           data:this.dataEyes,
-          color: (opacity = 1) => `rgba(0, 0, 255, ${opacity})`, // optional
+          color: (opacity = 1) => `rgba(186, 100, 232, ${opacity})`, // optional
           strokeWidth: 2 // optional
         }
       ],
-      legend: ["Happy", "Sad", "Neutral", "Open Eyes"]
+      legend: ["Happy", "Neutral", "Open Eyes"]
     }
     this.forceUpdate();
   }
