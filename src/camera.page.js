@@ -3,11 +3,10 @@ import React, {Component} from 'react';
 import { Camera } from 'expo-camera';
 import { View, Text, Button, TouchableOpacity, Dimensions, ImageBackground} from 'react-native';
 import * as Permissions from 'expo-permissions';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons} from '@expo/vector-icons';
 import Toolbar from './toolbar.component';
 import styles from './styles';
 import Fun from './graf';
-import { MaterialIcons } from '@expo/vector-icons';
 import * as FaceDetector from 'expo-face-detector';
 
 const dat = require('./data.json')
@@ -213,17 +212,17 @@ export default class CameraPage extends React.Component {
       datasets : [
         {
           data: this.dataHappy, 
-          color: (opacity = 1) => `rgba(237, 202, 49, ${opacity})`, // optional
+          color: (opacity = 1) => `rgba(246, 9, 9, ${opacity})`, // optional
           strokeWidth: 2 // optional
         },
         {
           data:this.dataNeutral,
-          color: (opacity = 1) => `rgba(73, 104, 55, ${opacity})`, // optional
+          color: (opacity = 1) => `rgba(35, 133, 5, ${opacity})`, // optional
           strokeWidth: 2 // optional
         },
         {
           data:this.dataEyes,
-          color: (opacity = 1) => `rgba(186, 100, 232, ${opacity})`, // optional
+          color: (opacity = 1) => `rgba(136, 13, 155, ${opacity})`, // optional
           strokeWidth: 2 // optional
         }
       ],
@@ -297,12 +296,20 @@ export default class CameraPage extends React.Component {
               <View style = {styles.cambutton}>
                 <TouchableOpacity onPress={ () =>this._switch()}>
                         <Ionicons
-                          name="md-camera"
+                          name="ios-arrow-dropright"
                           color="black"
                           size={90}
                         />
                 </TouchableOpacity>
               </View>
+              <View style={styles.button2}>
+                  <Ionicons
+                    name="logo-github"
+                    color="black"
+                    size={20}
+                  />
+                  <Text>  UNX Digital</Text>
+                </View>
             </ImageBackground>
           </View>}
         </View>
