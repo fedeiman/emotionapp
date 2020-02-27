@@ -54,7 +54,7 @@ export default StyleSheet.create({
     },
     button: {
         flex:1,
-        justifyContent:'center',
+        justifyContent:'flex-end',
     },
     backbutton:{
         justifyContent: 'flex-start',
@@ -74,6 +74,12 @@ export default StyleSheet.create({
         position: 'absolute',
         height: 100,
         bottom: 0,
+    },
+    cambutton: {
+      flex: 0.5,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
     },
     captureBtn: {
         width: 60,

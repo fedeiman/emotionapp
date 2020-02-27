@@ -39,13 +39,14 @@ edit = (smilingProbability, leftEyeOpenProbability, rightEyeOpenProbability) => 
   
   a = (a * 100) 
  
-  y = 100 - a
+  if (a != 0)
+    y = 100 - a
 
-    dat.info.push({
-      "Happy": a,
-      "Neutral": y,
-      "Eyes": e,
-    });
+  dat.info.push({
+    "Happy": a,
+    "Neutral": y,
+    "Eyes": e,
+  });
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -292,9 +293,17 @@ export default class CameraPage extends React.Component {
             </View>
           </View>:
           <View style = {styles.button}>
-          <ImageBackground source={require('./hola.jpeg')} style={styles.button}>
-          <Button onPress={() => this._switch()} title="camera"/>
-          </ImageBackground>
+            <ImageBackground source={require('./unx.png')} style={styles.button}>
+              <View style = {styles.cambutton}>
+                <TouchableOpacity onPress={ () =>this._switch()}>
+                        <Ionicons
+                          name="md-camera"
+                          color="black"
+                          size={90}
+                        />
+                </TouchableOpacity>
+              </View>
+            </ImageBackground>
           </View>}
         </View>
       </React.Fragment>);
