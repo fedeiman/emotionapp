@@ -1,7 +1,7 @@
 // src/camera.page.js file
 import React, {Component} from 'react';
 import { Camera } from 'expo-camera';
-import { View, Text, Button, TouchableOpacity, Dimensions} from 'react-native';
+import { View, Text, Button, TouchableOpacity, Dimensions, ImageBackground} from 'react-native';
 import * as Permissions from 'expo-permissions';
 import { Ionicons } from '@expo/vector-icons';
 import Toolbar from './toolbar.component';
@@ -291,8 +291,10 @@ export default class CameraPage extends React.Component {
               </View>                
             </View>
           </View>:
-          <View>
+          <View style = {styles.button}>
+          <ImageBackground source={require('./hola.jpeg')} style={styles.button}>
           <Button onPress={() => this._switch()} title="camera"/>
+          </ImageBackground>
           </View>}
         </View>
       </React.Fragment>);
