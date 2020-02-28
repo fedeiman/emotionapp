@@ -57,7 +57,7 @@ export default StyleSheet.create({
     },
     button: {
         flex:1,
-        justifyContent:'flex-end',
+        justifyContent:'center',
     },
     backbutton:{
         justifyContent: 'flex-start',

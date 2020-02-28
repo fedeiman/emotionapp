@@ -291,26 +291,8 @@ export default class CameraPage extends React.Component {
               </View>                
             </View>
           </View>:
-          <View style = {styles.button}>
-            <ImageBackground source={require('./unx.png')} style={styles.button}>
-              <View style = {styles.cambutton}>
-                <TouchableOpacity onPress={ () =>this._switch()}>
-                        <Ionicons
-                          name="ios-arrow-dropright"
-                          color="black"
-                          size={90}
-                        />
-                </TouchableOpacity>
-              </View>
-              <View style={styles.button2}>
-                  <Ionicons
-                    name="logo-github"
-                    color="black"
-                    size={20}
-                  />
-                  <Text>  UNX Digital</Text>
-                </View>
-            </ImageBackground>
+          <View>
+            <Button onPress={() => this._switch()} title="camera"/>
           </View>}
         </View>
       </React.Fragment>);
