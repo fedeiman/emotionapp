@@ -107,9 +107,6 @@ export default class CameraPage extends React.Component {
             top: bounds.origin.y,
           },
         ]}>
-        <Text style={styles.faceText}>smile: {(smilingProbability*100).toFixed(3).slice(0,-1)}</Text>
-        <Text style={styles.faceText}>left eye: {(leftEyeOpenProbability*100).toFixed(3).slice(0,-1)}</Text>
-        <Text style={styles.faceText}>right eye: {(rightEyeOpenProbability*100).toFixed(3).slice(0,-1)}</Text>
       </View>
     );
   }
@@ -292,7 +289,7 @@ export default class CameraPage extends React.Component {
             </View>
           </View>:
           <View style = {styles.button}>
-            <ImageBackground source={require('./unx.png')} style={styles.button}>
+            <ImageBackground source={require('../assets/splash.png')} style={styles.button}>
               <View style = {styles.cambutton}>
                 <TouchableOpacity onPress={ () =>this._switch()}>
                         <Ionicons
