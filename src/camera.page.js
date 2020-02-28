@@ -1,21 +1,18 @@
 // src/camera.page.js file
 import React, {Component} from 'react';
 import { Camera } from 'expo-camera';
-import { View, Text, Button, TouchableOpacity, Dimensions} from 'react-native';
+import { View, Text, Button, TouchableOpacity, Dimensions, ImageBackground} from 'react-native';
 import * as Permissions from 'expo-permissions';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons} from '@expo/vector-icons';
 import Toolbar from './toolbar.component';
 import styles from './styles';
 import Fun from './graf';
-import { MaterialIcons } from '@expo/vector-icons';
-
-const landmarkSize = 2;
+import * as FaceDetector from 'expo-face-detector';
 
 const dat = require('./data.json')
 
 const screenWidth = Dimensions.get("window").width;
 const screenheight = Dimensions.get("window").height;
-
 const chartConfig = {
   backgroundGradientFrom: "#1E2923",
   backgroundGradientFromOpacity: 0,
@@ -26,28 +23,30 @@ const chartConfig = {
   barPercentage: 0.5
 };
 
-edit = () => {
-  a = Math.random() * 100
-  b = Math.random() * 100
-  c = Math.random() * 100
-  d = Math.random() * 100
+happy = 0;
+lef = 0;
+rig = 0;
 
-  e = a+b+c+d
+edit = (smilingProbability, leftEyeOpenProbability, rightEyeOpenProbability) => {
+  
+  a = smilingProbability
+  b = leftEyeOpenProbability
+  c = rightEyeOpenProbability
+  y = 0
 
-  a = (a * 100) / e
-  b = (b * 100) / e
-  c = (c * 100) / e
-  d = (d * 100) / e
+  e = ((b + c)/2)*100
+  
+  a = (a * 100) 
+ 
+  if (a != 0)
+    y = 100 - a
 
   dat.info.push({
     "Happy": a,
-    "Sad":b,
-    "Neutral": c,
-    "Angry": d
+    "Neutral": y,
+    "Eyes": e,
   });
-
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -58,17 +57,14 @@ export default class CameraPage extends React.Component {
   counter = {};
   camera = null;
   dataHappy = new Array(6).fill(0);
-  dataSad = new Array(6).fill(0);
   dataNeutral = new Array(6).fill(0);
-  dataAngry = new Array(6).fill(0);
-
+  dataEyes = new Array(6).fill(0);
   state = {
       cameraType: null,
       hasCameraPermission: null,
       bool: false,
       faceDetecting: false,
       faces: [],
-
   };
 
   toggleFaceDetection = () => this.setState({ faceDetecting: !this.state.faceDetecting });
@@ -76,10 +72,28 @@ export default class CameraPage extends React.Component {
   onFacesDetected = ({ faces }) => this.setState({ faces });
   onFaceDetectionError = state => console.warn('Faces detection error:', state);
 
-
-  renderFace({ bounds, rollAngle, yawAngle }) {
+  renderFace = ({bounds, faceID, rollAngle, yawAngle, smilingProbability,leftEyeOpenProbability,rightEyeOpenProbability }) => {       
+    if(this.state.faces.length == 1 || this.state.faces.length == 0 ){
+      happy = smilingProbability;
+      lef = leftEyeOpenProbability;
+      rig = rightEyeOpenProbability;
+      }
+      else{
+        happy = 0;
+        lef = 0;
+        rig = 0;
+        for(let i = 0; i < this.state.faces.length; i++ ){
+          happy = this.state.faces[i].smilingProbability + happy
+          lef = this.state.faces[i].leftEyeOpenProbability + lef
+          rig = this.state.faces[i].rightEyeOpenProbability + rig
+        }
+        happy = happy/this.state.faces.length
+        rig = rig/this.state.faces.length
+        lef = lef/this.state.faces.length
+      }
     return (
       <View
+        key={faceID}
         transform={[
           { perspective: 600 },
           { rotateZ: `${rollAngle.toFixed(0)}deg` },
@@ -93,8 +107,9 @@ export default class CameraPage extends React.Component {
             top: bounds.origin.y,
           },
         ]}>
-        <Text style={styles.faceText}>rollAngle: {rollAngle.toFixed(0)}</Text>
-        <Text style={styles.faceText}>yawAngle: {yawAngle.toFixed(0)}</Text>
+        <Text style={styles.faceText}>smile: {(smilingProbability*100).toFixed(3).slice(0,-1)}</Text>
+        <Text style={styles.faceText}>left eye: {(leftEyeOpenProbability*100).toFixed(3).slice(0,-1)}</Text>
+        <Text style={styles.faceText}>right eye: {(rightEyeOpenProbability*100).toFixed(3).slice(0,-1)}</Text>
       </View>
     );
   }
@@ -130,14 +145,14 @@ export default class CameraPage extends React.Component {
   }
 
   renderFaces = () => 
-  <View style={styles.facesContainer} pointerEvents="none">
-    {this.state.faces.map(this.renderFace)}
-  </View>
+    <View style={styles.facesContainer} pointerEvents="none">
+      {this.state.faces.map(this.renderFace)}    
+      </View>
 
-renderLandmarks = () => 
-  <View style={styles.facesContainer} pointerEvents="none">
-    {this.state.faces.map(this.renderLandmarksOfFace)}
-  </View>
+  renderLandmarks = () => 
+    <View style={styles.facesContainer} pointerEvents="none">
+      {this.state.faces.map(this.renderLandmarksOfFace)}
+    </View>
   
   setCameraType = (cameraType) => this.setState({ cameraType });
 
@@ -152,7 +167,7 @@ renderLandmarks = () =>
   stop = () => {
     if(!this.Start){
      clearInterval(this.counter);
-     console.log("Stop")
+     //console.log("Stop")
     }
     else{
     this.counter = setInterval(this.timer, 1000);
@@ -160,9 +175,11 @@ renderLandmarks = () =>
   }
 
   timer = () => {
-    edit();
+    if(this.state.faceDetecting){
+      edit(happy, lef, rig)
+    }
     this.datos();
-    console.log("Run...")
+    //console.log("Run...")
   }
 
   _switch = () => {this.setState({bool: true});
@@ -177,46 +194,39 @@ renderLandmarks = () =>
   datos = () => {
     for(let i=0; i < 5; i++){
       this.dataHappy.splice(i, 1, this.dataHappy[i+1])
-      this.dataSad.splice(i, 1, this.dataSad[i+1])
       this.dataNeutral.splice(i, 1, this.dataNeutral[i+1])
-      this.dataAngry.splice(i, 1, this.dataAngry[i+1])
+      this.dataEyes.splice(i, 1, this.dataEyes[i+1])
     }
     if(this.j < (dat.info.length)){
       this.dataHappy.splice(5, 1, dat.info[this.j].Happy)
-      this.dataSad.splice(5, 1, dat.info[this.j].Sad)
       this.dataNeutral.splice(5, 1, dat.info[this.j].Neutral)
-      this.dataAngry.splice(5, 1, dat.info[this.j].Angry)
+      this.dataEyes.splice(5, 1, dat.info[this.j].Eyes)
       this.j ++
     }
     else{
       this.dataHappy.splice(5, 1, 0)
-      this.dataSad.splice(5, 1, 0)
       this.dataNeutral.splice(5, 1, 0)
-      this.dataAngry.splice(5, 1, 0)
+      this.dataEyes.splice(5, 1, 0)
     }
     this.data = {
       datasets : [
-        { 
-          data: this.dataHappy, 
-          color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // optional
-          strokeWidth: 2 // optional
-        },
         {
-          data:this.dataSad,
-          color: (opacity = 1) => `rgba(255, 255, 0, ${opacity})`, // optional
+          data: this.dataHappy, 
+          color: (opacity = 1) => `rgba(246, 9, 9, ${opacity})`, // optional
           strokeWidth: 2 // optional
         },
         {
           data:this.dataNeutral,
-          color: (opacity = 1) => `rgba(255, 0, 0, ${opacity})`, // optional
+          color: (opacity = 1) => `rgba(35, 133, 5, ${opacity})`, // optional
           strokeWidth: 2 // optional
         },
         {
-          data:this.dataAngry,
-          color: (opacity = 1) => `rgba(0, 0, 255, ${opacity})`, // optional
+          data:this.dataEyes,
+          color: (opacity = 1) => `rgba(136, 13, 155, ${opacity})`, // optional
           strokeWidth: 2 // optional
-        }],
-      legend: ["Happy", "Sad", "Neutral", "Angry"]
+        }
+      ],
+      legend: ["Happy", "Neutral", "Open Eyes"]
     }
     this.forceUpdate();
   }
@@ -232,50 +242,59 @@ renderLandmarks = () =>
       return <Text> Access to camera has been denied. </Text>;
     }
 
-        return (
-            <React.Fragment>
-                <View style = {styles.button}>
-                    {this.state.bool
-                    ?<View style={styles.preview}>
-                        <Camera
-                            style={styles.preview}
-                            type={cameraType}
-                            ref={camera => this.camera = camera}
-                            onFacesDetected={this.state.faceDetecting ? this.onFacesDetected : undefined}
-                            onFaceDetectionError={this.onFaceDetectionError}>   
-                        </Camera>
-                        <TouchableOpacity onPress={this.toggleFaceDetection}>
-                          <MaterialIcons name="tag-faces" size={32} color={this.state.faceDetecting ? "white" : "#858585" } />
-                        </TouchableOpacity>
-                        {this.state.faceDetecting && this.renderFaces()}
-                        {this.state.faceDetecting && this.renderLandmarks()}
-                        <View style={styles.graf}>
-                            <Fun
-                                data={this.data}
-                                chartConfig={chartConfig}
-                                screenWidth={screenWidth}
-                                screenheight={screenheight}
-                            />
-                            <View style={styles.bot}>
-                                <TouchableOpacity style={styles.backbutton}
-                                    onPress={ () =>this._switch2()}>
-                                <Ionicons
-                                    name="md-arrow-back"
-                                    color="black"
-                                    size={30}
-                                />
-                                </TouchableOpacity>
-                                <Toolbar 
-                                    cameraType={cameraType}
-                                    setCameraType={this.setCameraType}/>
-                            </View>                
-                        </View>
-                    </View>
-                    :<View>
-                        <Button onPress={() => this._switch()} title="camera"/>
-                    </View>}
-                </View>
-            </React.Fragment>
-        );
+    return (
+      <React.Fragment>
+        <View style = {styles.button}>
+          {this.state.bool?
+          <View style={styles.preview}>
+            <Camera
+              style={styles.preview}
+              type={cameraType}
+              ref={camera => this.camera = camera}
+              onFacesDetected={this.state.faceDetecting ? this.onFacesDetected : undefined}
+              onFaceDetectionError={this.onFaceDetectionError}
+              faceDetectorSettings=
+                {{
+                  mode: FaceDetector.Constants.Mode.fast,
+                  detectLandmarks: FaceDetector.Constants.Landmarks.none,
+                  runClassifications: FaceDetector.Constants.Classifications.all,
+                  minDetectionInterval: 100,
+                  tracking: true,
+                }}
+              >   
+            </Camera>
+            {this.state.faceDetecting && this.renderFaces()}
+            {this.state.faceDetecting && this.renderLandmarks()}
+            <View style={styles.graf}>
+              <Fun
+                data={this.data}
+                chartConfig={chartConfig}
+                screenWidth={screenWidth}
+                screenheight={screenheight}
+              />
+              <View style={styles.bot}>
+                <TouchableOpacity style={styles.backbutton}
+                  onPress={ () =>this._switch2()}>
+                  <Ionicons
+                    name="md-arrow-back"
+                    color="black"
+                    size={30}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={this.toggleFaceDetection}>
+                  <MaterialIcons name="tag-faces" size={32} color={this.state.faceDetecting ? "green" : "black" } />
+                </TouchableOpacity>
+                <Toolbar 
+                  cameraType={cameraType}
+                  setCameraType={this.setCameraType}
+                />
+              </View>                
+            </View>
+          </View>:
+          <View>
+            <Button onPress={() => this._switch()} title="camera"/>
+          </View>}
+        </View>
+      </React.Fragment>);
     };
-};
+  };

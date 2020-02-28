@@ -10,6 +10,9 @@ export default StyleSheet.create({
       flexDirection: 'column',
       justifyContent: 'space-around',
     },
+    button2:{
+      flexDirection: 'row',
+    },
     facesContainer: {
         position: 'absolute',
         bottom: 0,
@@ -74,6 +77,12 @@ export default StyleSheet.create({
         position: 'absolute',
         height: 100,
         bottom: 0,
+    },
+    cambutton: {
+      flex: 0.5,
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
     },
     captureBtn: {
         width: 60,
