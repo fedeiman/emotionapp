@@ -156,8 +156,7 @@ export default class CameraPage extends React.Component {
 
   async componentDidMount() {
       const camera = await Permissions.askAsync(Permissions.CAMERA);
-      const audio = await Permissions.askAsync(Permissions.AUDIO_RECORDING);
-      const hasCameraPermission = (camera.status === 'granted' && audio.status === 'granted');
+      const hasCameraPermission = (camera.status === 'granted');
       this.setState({ hasCameraPermission });
       this.datos();
   };
@@ -228,6 +227,12 @@ export default class CameraPage extends React.Component {
     }
     this.forceUpdate();
   }
+  async _permission()  {
+    camera = await Permissions.askAsync(Permissions.CAMERA);
+    hasCameraPermission = (camera.status === 'granted');
+    this.setState({hasCameraPermission})
+    this.forceUpdate();
+  }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   render() {
@@ -237,7 +242,18 @@ export default class CameraPage extends React.Component {
       return <View />;
     } 
     else if (hasCameraPermission === false) {
-      return <Text> Access to camera has been denied. </Text>;
+      return <View style={styles.errorscreen}>
+        <Text style={styles.text}>Permissions denied</Text>
+        <TouchableOpacity
+        onPress={ () => this._permission()}>
+          <Ionicons
+            name="md-refresh"
+            color="black"
+            size={90}
+            />
+          </TouchableOpacity>
+      </View>
+      
     }
 
     return (

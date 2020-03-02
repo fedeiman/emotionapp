@@ -10,6 +10,16 @@ export default StyleSheet.create({
       flexDirection: 'column',
       justifyContent: 'space-around',
     },
+    errorscreen:{
+      flex:1,
+      justifyContent:'space-around',
+      alignItems: 'center'
+    },
+    text:{
+      fontSize: 30,
+      fontWeight: 'bold',
+      color:'red',
+    },
     button2:{
       flexDirection: 'row',
     },
