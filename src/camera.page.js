@@ -107,6 +107,7 @@ export default class CameraPage extends React.Component {
             top: bounds.origin.y,
           },
         ]}>
+        <Text style={styles.faceText}>ID: {faceID+1}</Text>
       </View>
     );
   }
