@@ -20,6 +20,28 @@ export default StyleSheet.create({
         left: 0,
         top: 0,
       },
+      errorscreen:{
+        flex:1,
+      },
+      backImage:{
+        flex: 1,        
+        justifyContent:'space-around',
+        alignItems: 'center',
+      },
+      principaltext:{
+        fontWeight: 'bold',
+        color:'#31312F',
+      },
+      text:{
+        fontSize: 30,
+        fontWeight: 'bold',
+        color:'red',
+      },
+      touch: {
+        backgroundColor: '#95FF3C',
+        padding: 10,
+        borderRadius: 5,
+      },
       landmark: {
         width: landmarkSize,
         height: landmarkSize,
@@ -57,7 +79,7 @@ export default StyleSheet.create({
     },
     button: {
         flex:1,
-        justifyContent:'center',
+        justifyContent:'flex-end',
     },
     backbutton:{
         justifyContent: 'flex-start',

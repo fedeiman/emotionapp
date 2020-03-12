@@ -158,8 +158,7 @@ export default class CameraPage extends React.Component {
 
   async componentDidMount() {
       const camera = await Permissions.askAsync(Permissions.CAMERA);
-      const audio = await Permissions.askAsync(Permissions.AUDIO_RECORDING);
-      const hasCameraPermission = (camera.status === 'granted' && audio.status === 'granted');
+      const hasCameraPermission = (camera.status === 'granted');
       this.setState({ hasCameraPermission });
       this.datos();
   };
@@ -230,6 +229,12 @@ export default class CameraPage extends React.Component {
     }
     this.forceUpdate();
   }
+  async _permission()  {
+    camera = await Permissions.askAsync(Permissions.CAMERA);
+    hasCameraPermission = (camera.status === 'granted');
+    this.setState({hasCameraPermission})
+    this.forceUpdate();
+  }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   render() {
@@ -239,7 +244,20 @@ export default class CameraPage extends React.Component {
       return <View />;
     } 
     else if (hasCameraPermission === false) {
-      return <Text> Access to camera has been denied. </Text>;
+      return <View style={styles.errorscreen}>
+        <ImageBackground source={require('../assets/splash.png')} style={styles.backImage}>
+          <Text style={styles.text}>Permissions denied</Text>
+            <TouchableOpacity
+              onPress={ () => this._permission()}>
+              <Ionicons
+                name="md-refresh"
+                color="black"
+                size={90}
+                />
+                </TouchableOpacity>
+        </ImageBackground>
+      </View>
+      
     }
 
     return (
@@ -291,8 +309,15 @@ export default class CameraPage extends React.Component {
               </View>                
             </View>
           </View>:
-          <View>
-            <Button onPress={() => this._switch()} title="camera"/>
+          <View style = {styles.button}>
+            <ImageBackground source={require('../assets/splash.png')} style={styles.button}>
+              <View style = {styles.cambutton}>
+                <TouchableOpacity onPress={ () =>this._switch()}
+                style={styles.touch}>
+                <Text style={styles.principaltext}> Start </Text>
+                </TouchableOpacity>
+              </View>
+            </ImageBackground>
           </View>}
         </View>
       </React.Fragment>);
